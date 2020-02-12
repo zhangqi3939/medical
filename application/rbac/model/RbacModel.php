@@ -46,4 +46,47 @@ class RbacModel extends Model
             ->find();
         return $sql;
     }
+    //用户保存
+    public function user_save($params)
+    {
+        $id = $params['id'];
+        $formData['user_name'] = input('post.user_name');
+        $password = $params['user_password'];
+        $formData['real_name'] = $params['real_name'];
+        $formData['tel'] = $params['tel'];
+        $formData['email'] = $params['email'];
+        $formData['gender'] = $params['gender'];
+        $role_ids = $params['role_id'];
+        if(!empty($password)){
+            $formData['user_password'] = md5($password);
+        }else{
+            $formData['user_password'] = md5(123456);
+        }
+        if(empty($id)){
+            $res = Db::name('rbac_user')->insertGetId($formData);
+            if($res > 0){
+                $result = Db::name('rbac_user_role')->insert(array('user_id'=>$res,'role_id'=>$role_ids));
+            }
+        }else{
+            if(empty($password)) unset($formData['user_password']);
+            $res = Db::name('rbac_user')->where('id',$id)->update($formData);
+            if($res > 0) {
+                $result = Db::name('rbac_user_role')->where('user_id', $id)->update(array('user_id' => $id, 'role_id' => $role_ids));
+            }
+        }
+        return $result;
+    }
+    public function user_delete($id)
+    {
+        $channel = 'web';
+        $user_info = $this->checkToken($channel);
+        $role_id = $user_info['ROLE_ID'];
+        if($id>0){
+            $res = Db::name('rbac_user')->where('id',$id)->delete();
+            $result = Db::name('rbac_user_role')->where('user_id',$id)->delete();
+        }else{
+            $result = -1;
+        }
+        return $result;
+    }
 }

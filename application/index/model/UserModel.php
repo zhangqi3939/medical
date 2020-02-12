@@ -49,4 +49,18 @@ class UserModel extends Model
         );
         $sql = Db::name('log')->insert(array('user_id'=>$d['user_id'],'remarks'=>$d['remarks'],'user_ip'=>$d['user_ip'],'insert_time'=>time()));
     }
+    //删除token，退出登录
+    public function deleteToken($channel){
+        $token = $this->getTokenFromHttp();
+        $t_token = time().'';
+        //var_dump($t_token);die;
+        //$this->db->where('token',$token)->where('channel',$channel)->update('token',array('token'=>$t_token));
+        $result = DB::name('token')->where('channel',$channel)->update(array('token'=>$t_token));
+        return $result;
+    }
+    //从请求中的到token
+    function getTokenFromHttp(){
+        $headers = getallheaders();
+        return isset($headers['token']) ? $headers['token'] : '';
+    }
 }

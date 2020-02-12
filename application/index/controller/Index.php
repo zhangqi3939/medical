@@ -47,4 +47,16 @@ class Index
             exit();
         }
     }
+    //退出登录
+    public function user_login_out()
+    {
+        $User =  new UserModel();
+        $channel = 'web';
+        $result = $User->deleteToken($channel);
+        if($result>0){
+            app_send();
+        }else{
+            app_send('','400','退出失败，请联系管理员');
+        }
+    }
 }
