@@ -37,4 +37,46 @@ class Rbac extends Controller
         }
 
     }
+    //用户详情
+    public function user_details()
+    {
+        $user_id = input('post.id');
+        $rbac = new RbacModel();
+        $info = $rbac->user_details($user_id);
+        app_send($info);
+    }
+    //角色保存
+    public  function role_save()
+    {
+        $data = input('post.');
+        $rbac = new RbacModel();
+        $result = $rbac->role_save($data);
+        app_send($result);
+    }
+    //角色列表
+    public function role_list()
+    {
+        $role = Db::name('rbac_role')->select();
+        app_send($role);
+    }
+    //角色删除
+    public function role_delete()
+    {
+        $id = input('post.id');
+        $rbac = new RbacModel();
+        $result = $rbac->role_delete($id);
+        if($result > 0){
+            app_send();
+        }else{
+            app_send('','400','角色选择错误。');
+        }
+    }
+    //角色详情
+    public function role_details()
+    {
+        $role_id = input('post.role_id');
+        $rbac = new RbacModel();
+        $info = $rbac->role_details($role_id);
+        app_send($info);
+    }
 }

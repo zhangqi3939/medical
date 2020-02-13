@@ -89,4 +89,66 @@ class RbacModel extends Model
         }
         return $result;
     }
+    public function user_details($params)
+    {
+        $info = Db::name('rbac_user')
+            ->alias('U')
+            ->join('rbac_user_role R','U.id=R.user_id','left')
+            ->where('U.id',$params)
+            ->find();
+        $info['role_id'] = explode(",",$info['role_id']);
+        return $info;
+    }
+    public function role_save($params)
+    {
+        $data = array(
+            'role_name' => $params['role_name'],
+            'describe'  => $params['describe']
+        );
+        $role_id = $data['role_id'];
+        if(empty($role_id)){
+            $role_exit = Db::name('rbac_role')->where('ROLE_NAME',$data['role_name'])->select();
+            if(!$role_exit){
+                $result = Db::name('rbac_role')->insertGetId($data);
+                if($result){
+                    $res = Db::name('rbac_role_right')->insert(array(
+                            'role_id'  => $result,
+                            'right_id' => $params['right_id']
+                        )
+                    );
+                }
+            }else{
+                app_send('','400','该角色名称已存在');
+            }
+        }else{
+            $result = Db::name('rbac_role')->where('id',$role_id)->update($data);
+            if($result){
+                $res = Db::name('rbac_role_right')->where('role_id',$role_id)->update(array(
+                        'role_id'  => $role_id,
+                        'right_id' => $params['right_id']
+                    )
+                );
+            }
+        }
+        return $res;
+    }
+    public function role_delete($id)
+    {
+        if (!empty($id)) {
+            $result = Db::name('rbac_role_right')->where('role_id', $id)->delete();
+            if ($result > 0) {
+                $res = Db::name('rbac_role')->where('id', $id)->delete();
+            } else {
+                app_send('', '400', '角色用户表删除失败');
+            }
+        } else {
+            app_send('', '400', '请选择您要删除的角色');
+        }
+        return $res;
+    }
+    public function role_details($role_id)
+    {
+        $role_info = Db::name('rbac_role')->where('id',$role_id)->select();
+        return $role_info;
+    }
 }
