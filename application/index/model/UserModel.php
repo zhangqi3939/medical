@@ -33,10 +33,10 @@ class UserModel extends Model
         $row = Db::name('rbac_token')->field('id')->where(array('user_id'=>$userID,'channel'=>$channel))->find();
         if(!empty($row)){
             //更新
-            Db::name('rbac_token')->where(array('id'=>$row['id']))->update(array('channel'=>$channel,'user_id'=>$userID,'ADD_TIME'=>time(),'USER_IP'=>$d['userr_ip'],'TOKEN'=>$d['token']));
+            Db::name('rbac_token')->where(array('id'=>$row['id']))->update(array('channel'=>$channel,'user_id'=>$userID,'add_time'=>time(),'user_ip'=>$d['user_ip'],'token'=>$d['token']));
         }else{
             //新记录
-            Db::name("rbac_token")->insert(array('channel'=>$channel,'user_id'=>$userID,'add_time'=>time(),'user_ip'=>$d['user_ip'],'TOKEN'=>$d['token']));
+            Db::name("rbac_token")->insert(array('channel'=>$channel,'user_id'=>$userID,'add_time'=>time(),'user_ip'=>$d['user_ip'],'token'=>$d['token']));
         }
         return $d['token'];
     }
@@ -45,7 +45,7 @@ class UserModel extends Model
         $d = array(
             'user_id'=>$uid,
             'remarks'=>$remarks,
-            'userIP'=>getIP()
+            'user_ip'=>getIP()
         );
         $sql = Db::name('log')->insert(array('user_id'=>$d['user_id'],'remarks'=>$d['remarks'],'user_ip'=>$d['user_ip'],'insert_time'=>time()));
     }
@@ -53,8 +53,6 @@ class UserModel extends Model
     public function deleteToken($channel){
         $token = $this->getTokenFromHttp();
         $t_token = time().'';
-        //var_dump($t_token);die;
-        //$this->db->where('token',$token)->where('channel',$channel)->update('token',array('token'=>$t_token));
         $result = DB::name('token')->where('channel',$channel)->update(array('token'=>$t_token));
         return $result;
     }

@@ -3,6 +3,7 @@ namespace app\index\controller;
 use think\Controller;
 use think\Db;
 use app\index\model\UserModel;
+use app\rbac\model\RbacModel;
 class Index
 {
     public function index()
@@ -24,13 +25,13 @@ class Index
         $User = new UserModel();
         $userExit = $User->userList($where);
         if(!empty($userExit) && count($userExit)>0){
-            if($userExit['USER_PASSWORD']  == $userPassword){
+            if($userExit['pass_word']  == $userPassword){
                 $token = $User->newToken($userExit["id"],$channel);
-                if(empty($token)){
+                if(!empty($token)){
                     $userdata = array(
                         'user_id' => $userExit["id"],
                         'user_name' =>$userExit["user_name"],
-                        'tel'=> $userExit['TEL'],
+                        'tel'=> $userExit['tel'],
                         'token'=> $token
                     );
                     $User->saveLoginLog($userdata['user_id']);
@@ -58,5 +59,13 @@ class Index
         }else{
             app_send('','400','退出失败，请联系管理员');
         }
+    }
+    //获取用户信息
+    public function user_info()
+    {
+        $Rbac =  new RbacModel();
+        $channel = 'web';
+        $user_info = $Rbac->checkToken($channel);
+        app_send($user_info);
     }
 }
