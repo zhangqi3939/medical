@@ -95,7 +95,7 @@ class RbacModel extends Model
             ->join('rbac_user_role R','U.id=R.user_id','left')
             ->where('U.id',$params)
             ->find();
-        $info['role_id'] = explode(",",$info['role_id']);
+        //$info['role_id'] = explode(",",$info['role_id']);
         return $info;
     }
     public function role_save($params)
@@ -106,7 +106,7 @@ class RbacModel extends Model
         );
         $role_id = $data['role_id'];
         if(empty($role_id)){
-            $role_exit = Db::name('rbac_role')->where('ROLE_NAME',$data['role_name'])->select();
+            $role_exit = Db::name('rbac_role')->where('role_name',$data['role_name'])->select();
             if(!$role_exit){
                 $result = Db::name('rbac_role')->insertGetId($data);
                 if($result){
@@ -147,7 +147,7 @@ class RbacModel extends Model
     }
     public function role_details($role_id)
     {
-        $role_info = Db::name('rbac_role')->where('id',$role_id)->select();
+        $role_info = Db::name('rbac_role')->where('id',$role_id)->find();
         return $role_info;
     }
 }

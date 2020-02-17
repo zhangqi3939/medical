@@ -62,7 +62,7 @@ class Rbac extends Controller
     //角色删除
     public function role_delete()
     {
-        $id = input('post.id');
+        $id = input('post.role_id');
         $rbac = new RbacModel();
         $result = $rbac->role_delete($id);
         if($result > 0){
