@@ -14,7 +14,7 @@ class EquipmentModel extends Model
         $data['number'] = $params['number'];
         $data['type'] = $params['type'];
         if(empty($id)){
-            $exit = Db::name('equipment')->where('name',$params['equipment_name'])->find();
+            $exit = Db::name('equipment')->where('equipment_name',$params['equipment_name'])->find();
             if(empty($exit)){
                 $result = Db::name('equipment')->insert($data);
             }else{

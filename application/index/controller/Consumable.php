@@ -3,7 +3,7 @@ use think\Controller;
 use think\Db;
 use app\index\model\UserModel;
 use app\rbac\model\RbacModel;
-use app\index\model\EquipmentModel;
+use app\index\model\ConsumableModel;
 class Consumable
 {
     //耗材保存

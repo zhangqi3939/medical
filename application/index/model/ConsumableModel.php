@@ -11,7 +11,7 @@ class ConsumableModel extends Model
         $data['consumable_name'] = $params['consumable_name'];
         $data['rfid'] = $params['rfid'];
         if(empty($id)){
-            $exit = Db::name('consumable')->where('name',$params['consumable_name'])->find();
+            $exit = Db::name('consumable')->where('consumable_name',$params['consumable_name'])->find();
             if(empty($exit)){
                 $result = Db::name('consumable')->insert($data);
             }else{
