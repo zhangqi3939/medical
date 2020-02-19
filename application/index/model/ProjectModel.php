@@ -34,4 +34,26 @@ class ProjectModel extends Model
         $result = Db::name('project')->where('id',$id)->delete();
         return $result;
     }
+    //项目->选择设备
+    public function choose_equipment($params)
+    {
+        $id = $params['id'];
+        $equipment_id = $params['equipment_id'];
+        $equipment_id = explode( ',',$equipment_id);
+        foreach($equipment_id as $row) {
+            $result = Db::name('equipment')->where('id',$row)->update(array('pid'=>$id));
+        }
+        return $result;
+    }
+    //项目->选择管理者
+    public function choose_manager($params)
+    {
+        $id = $params['id'];
+        $uid = $params['uid'];
+        $uid = explode( ',',$uid);
+        foreach($uid as $row) {
+            $result = Db::name('rbac_user')->where('id',$row)->update(array('pid'=>$id));
+        }
+        return $result;
+    }
 }

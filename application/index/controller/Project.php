@@ -44,5 +44,28 @@ class Project
             app_send('','400','耗材删除失败');
         }
     }
-    //
+    //项目->选择设备
+    public function choose_equipment()
+    {
+        $data = input('post.');
+        $Project = new ProjectModel();
+        $result =  $Project->choose_equipment($data);
+        if($result > 0){
+            app_send();
+        }else{
+            app_send('','400','项目设备保存失败');
+        }
+    }
+    //项目->添加管理人员
+    public function choose_manager()
+    {
+        $data = input('post.');
+        $Project = new ProjectModel();
+        $result =  $Project->choose_manager($data);
+        if($result > 0){
+            app_send();
+        }else{
+            app_send('','400','项目管理者保存失败');
+        }
+    }
 }
