@@ -1,4 +1,5 @@
 <?php
+namespace app\index\controller;
 use think\Controller;
 use think\Db;
 use app\index\model\UserModel;
@@ -11,7 +12,7 @@ class Project
     {
         $data = input('post.');
         $Project = new ProjectModel();
-        $result = $Project->project_save();
+        $result = $Project->project_save($data);
         if($result > 0){
             app_send();
         }else{

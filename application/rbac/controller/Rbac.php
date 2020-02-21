@@ -21,7 +21,11 @@ class Rbac extends Controller
     //用户列表
     public function user_list()
     {
-        $user = Db::name('rbac_user')->select();
+        $user = Db::name('rbac_user')
+            ->alias('u')
+            ->join('rbac_user_role r','u.id = r.user_id','left')
+            ->field('u.id,u.user_name,u.real_name,u.gender,r.role_id')
+            ->select();
         app_send($user);
     }
     //用户删除
@@ -78,5 +82,11 @@ class Rbac extends Controller
         $rbac = new RbacModel();
         $info = $rbac->role_details($role_id);
         app_send($info);
+    }
+    //权限列表
+    public function right_list()
+    {
+        $details = Db::name('rbac_right')->where('parent_id',0)->select();
+        app_send($details);
     }
 }

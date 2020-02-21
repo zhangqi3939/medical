@@ -3,6 +3,7 @@
 namespace app\index\model;
 use think\Model;
 use think\Db;
+use app\rbac\model\RbacModel;
 class UserModel extends Model
 {
     //查询登录用户的信息
@@ -60,5 +61,24 @@ class UserModel extends Model
     function getTokenFromHttp(){
         $headers = getallheaders();
         return isset($headers['token']) ? $headers['token'] : '';
+    }
+    //修改密码
+    public function user_password_change($params)
+    {
+        $rbac = new RbacModel();
+        $old_password = $params['old_password'];
+        $new_password = $params['new_password'];
+        $channel = 'web';
+        $user_info = $rbac->checkToken($channel);
+        if(md5($old_password) == $user_info['pass_word']){
+            $result = Db::name('rbac_user')->where('id',$user_info['id'])->update(array('pass_word'=>md5($new_password)));
+            if($result > 0 ){
+               return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
     }
 }

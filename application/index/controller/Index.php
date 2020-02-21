@@ -68,4 +68,16 @@ class Index
         $user_info = $Rbac->checkToken($channel);
         app_send($user_info);
     }
+    //修改密码
+    public function user_password_change()
+    {
+        $data = input('post.');
+        $User =  new UserModel();
+        $result = $User->user_password_change($data);
+        if($result == true){
+            app_send();
+        }else{
+            app_send('','400','源密码错误');
+        }
+    }
 }

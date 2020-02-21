@@ -1,4 +1,5 @@
 <?php
+
 namespace app\index\model;
 use think\Model;
 use think\Db;
@@ -7,12 +8,19 @@ class ProjectModel extends Model
     //项目保存
     public function project_save($params)
     {
-        $id = $params['id'];
-        $data['project_name'] = $params['project_name'];
-        $data['describe'] = $params['describe'];
+        $id = empty($params['id']) ? "" : $params['id'];
+        $data['name'] = empty($params['name']) ? "" : $params['name'];
+        $data['remarks'] = empty($params['remarks']) ? "" : $params['remarks'];
+        $data['province'] = empty($params['province']) ? "" : $params['province'];
+        $data['city'] = empty($params['city']) ? "" : $params['city'];
+        $data['charge_person'] = empty($params['charge_person']) ? "" : $params['charge_person'];
+        $data['gender'] = empty($params['gender']) ? "" : $params['gender'];
+        $data['tel'] = empty($params['tel']) ? "" : $params['tel'];
+        $data['email'] = empty($params['email']) ? "" : $params['email'];
         if(empty($id)){
-            $exit = Db::name('project')->where('project_name',$params['project_name'])->find();
+            $exit = Db::name('project')->where('name',$params['name'])->find();
             if(empty($exit)){
+                $data['create_time'] = time();
                 $result = Db::name('project')->insert($data);
             }else{
                 app_send('', '400', '设备已存在,请仔细核对设备名称');

@@ -12,6 +12,7 @@ class RbacModel extends Model
     //token检查
     public function checkToken($channel){
         $token = $this->getTokenFromHttp();
+        dump($token);die;
         $token = trim($token,'"');
         if(empty($token)){
             app_send('',401,'您的登录信息为空。');
@@ -39,7 +40,7 @@ class RbacModel extends Model
         $sql = Db::name('rbac_token')->alias('T')
             ->join('rbac_user U','T.user_id = U.id','left')
             ->join('rbac_user_role R','R.user_id =  U.id','left')
-            ->field('U.id,R.role_id,U.user_name,U.tel,U.gender,T.token,T.id AS token_id,T.add_time')
+            ->field('U.id,R.role_id,U.user_name,U.tel,U.gender,U.pass_word,T.token,T.id AS token_id,T.add_time')
             ->where('T.channel',$channel)
             ->where('T.token',$token)
             ->find();
@@ -48,20 +49,21 @@ class RbacModel extends Model
     //用户保存
     public function user_save($params)
     {
-        $id = $params['id'];
-        $formData['user_name'] = input('post.user_name');
-        $password = $params['user_password'];
-        $formData['real_name'] = $params['real_name'];
-        $formData['tel'] = $params['tel'];
-        $formData['email'] = $params['email'];
-        $formData['gender'] = $params['gender'];
-        $role_ids = $params['role_id'];
+        $id = empty($params['id']) ? "" : $params['id'];
+        $formData['user_name'] = empty($params['user_name']) ? "" : $params['user_name'];
+        $password = empty($params['user_password']) ? "" : $params['user_password'];
+        $formData['real_name'] =  empty($params['real_name']) ? "" : $params['real_name'];
+        $formData['tel'] = empty($params['tel']) ? "" : $params['tel'];
+        $formData['email'] = empty($params['email']) ? "" : $params['email'];
+        $formData['gender'] = empty($params['gender']) ? "" : $params['gender'];
+        $role_ids = empty($params['role_id']) ? "" : $params['role_id'];
         if(!empty($password)){
-            $formData['user_password'] = md5($password);
+            $formData['pass_word'] = md5($password);
         }else{
-            $formData['user_password'] = md5(123456);
+            $formData['pass_word'] = md5(123456);
         }
         if(empty($id)){
+            $formData['add_time'] = time();
             $res = Db::name('rbac_user')->insertGetId($formData);
             if($res > 0){
                 $result = Db::name('rbac_user_role')->insert(array('user_id'=>$res,'role_id'=>$role_ids));
@@ -102,9 +104,9 @@ class RbacModel extends Model
     {
         $data = array(
             'role_name' => $params['role_name'],
-            'describe'  => $params['describe']
+            'remarks'  => $params['remarks']
         );
-        $role_id = $data['role_id'];
+        $role_id = empty($params['role_id']) ? "" : $params['role_id'];
         if(empty($role_id)){
             $role_exit = Db::name('rbac_role')->where('role_name',$data['role_name'])->select();
             if(!$role_exit){
