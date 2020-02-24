@@ -7,11 +7,11 @@ use app\rbac\model\RbacModel;
 use app\index\model\EquipmentModel;
 class Equipment
 {
-    public function equipmemnt_save()
+    public function equipment_save()
     {
         $data = input('post.');
         $Equipment = new EquipmentModel();
-        $result = $Equipment->Equipmemnt_save($data);
+        $result = $Equipment->equipment_save($data);
         if($result > 0){
             app_send();
         }else{

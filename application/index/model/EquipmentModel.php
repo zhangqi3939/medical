@@ -8,13 +8,15 @@ class EquipmentModel extends Model
     //设备保存
     public function equipment_save($params)
     {
-        $id = $params['id'];
-        $data['pid'] = $params['pid'];
-        $data['equipment_name'] = $params['equipment_name'];
-        $data['number'] = $params['number'];
-        $data['type'] = $params['type'];
+        $id = empty($params['id'])  ? "" : $params['id'];
+        $data['project_id'] = empty($params['project_id']) ? "" : $params['project_id'];
+        $data['box_id'] = empty($params['box_id']) ? "" : $params['box_id'];
+        $data['install_user'] = empty($params['install_user']) ? "" : $params['install_user'];
+        $data['type'] = empty($params['type']) ? "" : $params['type'];
+        //$data['equipment_name'] = empty($params['equipment_name']) ? "" :$params['equipment_name'];
+        $data['install_time'] = time();
         if(empty($id)){
-            $exit = Db::name('equipment')->where('equipment_name',$params['equipment_name'])->find();
+            $exit = Db::name('equipment')->where('box_id',$params['box_id'])->find();
             if(empty($exit)){
                 $result = Db::name('equipment')->insert($data);
             }else{
