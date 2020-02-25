@@ -1,0 +1,974 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"box",
+				"box_id"
+			],
+			[
+				"is_a",
+				"is_array"
+			],
+			[
+				"star",
+				"startStamp"
+			],
+			[
+				"var",
+				"var_export"
+			],
+			[
+				"over",
+				"overview"
+			],
+			[
+				"equpmen",
+				"EquipmentModel"
+			],
+			[
+				"num",
+				"numRes"
+			],
+			[
+				"proj",
+				"project_id"
+			],
+			[
+				"sta",
+				"startStamp"
+			],
+			[
+				"start",
+				"startTime"
+			],
+			[
+				"end",
+				"endStamp"
+			],
+			[
+				"for",
+				"formData"
+			],
+			[
+				"deli",
+				"order_deliver_time"
+			],
+			[
+				"pro",
+				"products"
+			],
+			[
+				"pa",
+				"package_quantity"
+			],
+			[
+				"js",
+				"json"
+			],
+			[
+				"text",
+				"text-align\tproperty"
+			],
+			[
+				"order",
+				"orderID"
+			],
+			[
+				"app",
+				"app_send"
+			],
+			[
+				"produc",
+				"products"
+			],
+			[
+				"produ",
+				"products"
+			],
+			[
+				"pr",
+				"product"
+			],
+			[
+				"ord",
+				"orderObj"
+			],
+			[
+				"o",
+				"orderID"
+			],
+			[
+				"client",
+				"client_name"
+			],
+			[
+				"or",
+				"orderCopyDiv"
+			],
+			[
+				"exi",
+				"exists"
+			],
+			[
+				"name",
+				"nameExists"
+			],
+			[
+				"user",
+				"user_name"
+			],
+			[
+				"log",
+				"logout"
+			],
+			[
+				"te",
+				"tel"
+			],
+			[
+				"clie",
+				"client_id"
+			],
+			[
+				"item",
+				"item_num"
+			],
+			[
+				"cli",
+				"Client"
+			],
+			[
+				"inser",
+				"insert"
+			],
+			[
+				"lo",
+				"locale"
+			],
+			[
+				"clien",
+				"clientObj"
+			],
+			[
+				"cont",
+				"contact"
+			],
+			[
+				"form",
+				"form-control"
+			],
+			[
+				"fill",
+				"fillProduct"
+			],
+			[
+				"btn",
+				"btn-default"
+			],
+			[
+				"col",
+				"col-md-8"
+			],
+			[
+				"login",
+				"login_times"
+			],
+			[
+				"token",
+				"token_id"
+			],
+			[
+				"min",
+				"miniprogram"
+			],
+			[
+				"order_",
+				"order_replacement"
+			],
+			[
+				"data",
+				"dataTable"
+			],
+			[
+				"r",
+				"res"
+			],
+			[
+				"bor",
+				"border-left\tproperty"
+			],
+			[
+				"fil",
+				"fillDate"
+			],
+			[
+				"con",
+				"console"
+			],
+			[
+				"str",
+				"startTime"
+			],
+			[
+				"sr",
+				"sr-only"
+			],
+			[
+				"marg",
+				"margin-top\tproperty"
+			],
+			[
+				"margin",
+				"margin\tproperty"
+			],
+			[
+				"ma",
+				"margin-top\tproperty"
+			],
+			[
+				"pack",
+				"packageQuantity"
+			],
+			[
+				"forma",
+				"formatDate"
+			],
+			[
+				"load",
+				"loadData"
+			],
+			[
+				"prod",
+				"product_num_sale"
+			],
+			[
+				"be",
+				"between"
+			],
+			[
+				"product",
+				"product_num"
+			],
+			[
+				"jso",
+				"json_encode"
+			],
+			[
+				"del",
+				"deliverTime"
+			],
+			[
+				"clein",
+				"clientID"
+			],
+			[
+				"conta",
+				"contact"
+			],
+			[
+				"re",
+				"return"
+			],
+			[
+				"res",
+				"result"
+			],
+			[
+				"delivert",
+				"deliver_time"
+			],
+			[
+				"det",
+				"deliverTime"
+			],
+			[
+				"search",
+				"searchClientID"
+			],
+			[
+				"contro",
+				"form-control"
+			],
+			[
+				"col-xs",
+				"col-xs-6"
+			],
+			[
+				"st",
+				"startTime"
+			],
+			[
+				"stat",
+				"status"
+			],
+			[
+				"opt",
+				"option\tTag"
+			],
+			[
+				"va",
+				"val"
+			],
+			[
+				"add",
+				"address"
+			],
+			[
+				"adr",
+				"Address"
+			],
+			[
+				"loa",
+				"loadData"
+			],
+			[
+				"hel",
+				"helpBlock"
+			],
+			[
+				"real",
+				"realName"
+			],
+			[
+				"val",
+				"value"
+			],
+			[
+				"th",
+				"thead\tTag"
+			],
+			[
+				"hea",
+				"header\tTag"
+			],
+			[
+				"menu",
+				"menuStr"
+			],
+			[
+				"left",
+				"leftMenu"
+			],
+			[
+				"has",
+				"hasOwnProperty"
+			],
+			[
+				"loc",
+				"location"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"op",
+				"Operation"
+			],
+			[
+				"loca",
+				"localStorage"
+			],
+			[
+				"reser",
+				"Reserve5"
+			],
+			[
+				"reserv",
+				"reserve2"
+			],
+			[
+				"trav",
+				"travel_id"
+			],
+			[
+				"role_de",
+				"role_device_category"
+			],
+			[
+				"role",
+				"roles"
+			],
+			[
+				"exp",
+				"explode"
+			],
+			[
+				"cat",
+				"catArray"
+			],
+			[
+				"array_mer",
+				"array_merge_recursive"
+			],
+			[
+				"depart",
+				"department_id"
+			],
+			[
+				"inpt",
+				"input"
+			],
+			[
+				"roles",
+				"rolesArray"
+			],
+			[
+				"rbac",
+				"rbac_user_role"
+			],
+			[
+				"us",
+				"userRoles"
+			],
+			[
+				"userr",
+				"userRoles"
+			],
+			[
+				"userrol",
+				"userRolsArray"
+			],
+			[
+				"rba",
+				"rbac_user_role"
+			],
+			[
+				"rolein",
+				"role_description"
+			],
+			[
+				"reu",
+				"result"
+			],
+			[
+				"session",
+				"sessions"
+			],
+			[
+				"redi",
+				"redis"
+			],
+			[
+				"is",
+				"is_valid"
+			],
+			[
+				"endt",
+				"end_stamp"
+			],
+			[
+				"inta",
+				"intval"
+			],
+			[
+				"group",
+				"groupID"
+			],
+			[
+				"groupI",
+				"group_id"
+			],
+			[
+				"gr",
+				"group_ids"
+			],
+			[
+				"grou",
+				"group_id"
+			],
+			[
+				"station",
+				"station_id"
+			],
+			[
+				"sche",
+				"schedule_station"
+			],
+			[
+				"sele",
+				"selectDate"
+			],
+			[
+				"stti",
+				"station_id"
+			],
+			[
+				"Sess",
+				"session_decode"
+			],
+			[
+				"uns",
+				"unset"
+			],
+			[
+				"strto",
+				"strtotime"
+			],
+			[
+				"next",
+				"next_day"
+			],
+			[
+				"ex",
+				"exit"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "application/index/controller/Equipment.php",
+			"settings":
+			{
+				"buffer_size": 3757,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "application/index/model/DataModel.php",
+			"settings":
+			{
+				"buffer_size": 2901,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "application/index/model/EquipmentModel.php",
+			"settings":
+			{
+				"buffer_size": 2566,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/D/wwwroot/medical_php",
+		"/D/wwwroot/medical_php/application",
+		"/D/wwwroot/medical_php/application/index",
+		"/D/wwwroot/medical_php/application/index/controller",
+		"/D/wwwroot/medical_php/application/index/model",
+		"/D/wwwroot/medical_php/thinkphp"
+	],
+	"file_history":
+	[
+		"/D/wwwroot/medical_php/application/index/model/ConsumableModel.php",
+		"/D/wwwroot/medical_php/thinkphp/library/think/db/Query.php",
+		"/D/wwwroot/medical_php/application/database.php",
+		"/D/wwwroot/medical_php/public/php.php",
+		"/D/wwwroot/tglinen/man/order.html",
+		"/D/wwwroot/tglinen/application/controllers/man/Order.php",
+		"/D/wwwroot/tglinen/order/orders.html",
+		"/D/wwwroot/tglinen/public/js/winsig.js",
+		"/D/wwwroot/tglinen/man/order-detail.html",
+		"/D/wwwroot/tglinen/order/order.html",
+		"/D/wwwroot/tglinen/order/user_info.html",
+		"/D/wwwroot/tglinen/order/order_replacement.html",
+		"/D/wwwroot/tglinen/order/login.html",
+		"/D/wwwroot/tglinen/man/client.html",
+		"/D/wwwroot/tglinen/man/index.html",
+		"/D/wwwroot/tglinen/public/js/client.js",
+		"/D/wwwroot/tglinen/application/controllers/man/Product.php",
+		"/D/wwwroot/tglinen/order/index.html",
+		"/D/wwwroot/tglinen/man/login.html",
+		"/D/wwwroot/tglinen/application/controllers/man/User.php",
+		"/D/wwwroot/tglinen/man/user.html",
+		"/D/wwwroot/tglinen/application/controllers/man/Client.php",
+		"/D/wwwroot/tglinen/application/controllers/Client.php",
+		"/D/wwwroot/tglinen/application/controllers/Welcome.php",
+		"/D/wwwroot/tglinen/application/models/M_common.php",
+		"/D/wwwroot/tglinen/public/css/site.css",
+		"/D/wwwroot/tglinen/application/controllers/Login.php",
+		"/D/wwwroot/tglinen/man/product.html",
+		"/D/wwwroot/tglinen/public/css/app.v2.css",
+		"/D/wwwroot/tglinen/system/core/Router.php",
+		"/D/wwwroot/tglinen/application/controllers/man/Work.php",
+		"/D/wwwroot/tglinen/index.php",
+		"/D/wwwroot/tglinen/public/js/itemOpt.js",
+		"/D/wwwroot/tglinen/application/helpers/winsig_helper.php",
+		"/D/wwwroot/tglinen/application/controllers/man/D.php",
+		"/D/wwwroot/tglinen/application/core/MY_Controller.php",
+		"/D/wwwroot/tglinen/application/views/common/_footer.php",
+		"/D/wwwroot/tglinen/application/config/config.php",
+		"/D/wwwroot/tglinen/application/views/login.php",
+		"/D/wwwroot/tglinen/application/models/M_token.php",
+		"/D/wwwroot/tglinen/application/config/database.php",
+		"/D/wwwroot/tglinen/application/config/autoload.php",
+		"/D/wwwroot/tglinen/application/views/common/_header.php",
+		"/D/wwwroot/tglinen/php.php",
+		"/D/wwwroot/lenglian_new/wap/js/map.js",
+		"/D/wwwroot/lenglian_new/wap/index.html",
+		"/D/wwwroot/lenglian_new/application/controllers/Device.php",
+		"/D/wwwroot/lenglian_new/application/controllers/Welcome.php",
+		"/D/wwwroot/lenglian_new/application/models/M_api.php",
+		"/D/wwwroot/lenglian_new/php.php",
+		"/D/wwwroot/lenglian_new/application/controllers/S.php",
+		"/D/wwwroot/lenglian_new/zh/js/map.js",
+		"/D/wwwroot/lenglian_new/application/config/database.php",
+		"/D/wwwroot/lenglian_new/application/config/config.php",
+		"/D/wwwroot/lenglian_new/application/controllers/Dept.php",
+		"/D/wwwroot/lenglian_new/zh/js/map1.js",
+		"/D/wwwroot/lenglian_new/application/controllers/Appi.php",
+		"/D/wwwroot/lenglian_new/application/helpers/winsig_helper.php",
+		"/D/wwwroot/lenglian_new/application/controllers/Alarm.php",
+		"/D/wwwroot/lenglian_new/application/controllers/container/Waybill.php",
+		"/D/wwwroot/lenglian_new/application/models/container/M_waybill.php",
+		"/D/wwwroot/lenglian_new/application/models/M_travel.php",
+		"/D/wwwroot/lenglian_new/application/controllers/Information.php",
+		"/D/wwwroot/lenglian_new/application/core/MY_Controller.php",
+		"/D/wwwroot/lenglian_new/application/controllers/Rbac.php",
+		"/D/wwwroot/lenglian_new/application/controllers/D.php",
+		"/D/wwwroot/lenglian_new/application/controllers/Travel.php",
+		"/D/wwwroot/lenglian_new/application/controllers/Map.php",
+		"/D/wwwroot/lenglian_new/application/controllers/Report.php",
+		"/D/wwwroot/lenglian_new/application/controllers/Schedule.php",
+		"/D/wwwroot/lenglian_new/application/controllers/SystemMgr.php",
+		"/D/wwwroot/lenglian_new/application/controllers/Manual.php",
+		"/D/wwwroot/lenglian_new/system/core/Input.php",
+		"/D/wwwroot/lenglian_new/system/core/Security.php",
+		"/D/wwwroot/lenglian_new/system/core/Common.php",
+		"/D/wwwroot/lenglian_new/application/controllers/Welcome_1.php",
+		"/D/wwwroot/lenglian_new/application/models/M_redis.php",
+		"/D/wwwroot/lenglian_new/publicJS/reqDomain.js",
+		"/D/wwwroot/lenglian_new/application/views/admin/_footer.php",
+		"/D/wwwroot/lenglian_new/application/views/admin/deviceList.php",
+		"/D/wwwroot/lenglian_new/application/views/admin/_header_bak.php",
+		"/D/wwwroot/lenglian_new/application/views/admin/_footer_layer.php",
+		"/D/wwwroot/lenglian_new/application/views/admin/_header.php",
+		"/D/wwwroot/lenglian_new/zh/js/option1.js",
+		"/D/wwwroot/lenglian_new/zh/full_map2.html",
+		"/D/wwwroot/lenglian_new/application/helpers/mem_helper.php",
+		"/D/wwwroot/lenglian_new/zh/home.html",
+		"/D/wwwroot/lenglian_new/zh/index.html",
+		"/D/wwwroot/lenglian_new/zh/equipment_group.html",
+		"/D/wwwroot/lenglian_new/index.php",
+		"/D/wwwroot/lenglian_new/zh/js/method.js",
+		"/D/wwwroot/lenglian_new/zh/js/header.js",
+		"/D/wwwroot/lenglian_new/application/views/admin/userList.php",
+		"/D/wwwroot/lenglian_new/zh/user.html",
+		"/D/wwwroot/lenglian_new/m/system/core/Input.php",
+		"/D/wwwroot/lenglian_new/zh/full_map.html",
+		"/D/wwwroot/lenglian_new/zh/equipment_list——.html",
+		"/D/wwwroot/lenglian_new/zh/equipment_list.html",
+		"/D/wwwroot/lenglian_new/zh/full_map__0129.html",
+		"/D/wwwroot/lenglian_new/zh/full_map_b.html",
+		"/D/wwwroot/lenglian_new/zh/plugin.html",
+		"/D/wwwroot/lenglian_new/zh/equipment_data.html",
+		"/D/wwwroot/lenglian_new/zh/data_alarm_history.html",
+		"/D/wwwroot/lenglian_new/zh/data_alarm_bak.html",
+		"/D/wwwroot/lenglian_new/zh/data_alarm.html",
+		"/D/wwwroot/lenglian_new/zh/assistance.html",
+		"/D/wwwroot/lenglian_new/login.html",
+		"/D/wwwroot/lenglian_new/zh/video.html",
+		"/D/wwwroot/lenglian_new/zh/route_list.html",
+		"/D/wwwroot/lenglian_new/zh/report_form.html",
+		"/D/wwwroot/lenglian_new/zh/operation_log.html",
+		"/D/wwwroot/lenglian_new/css/common.css",
+		"/D/wwwroot/lenglian_new/zh/js/main.js",
+		"/D/wwwroot/lenglian_new/css/home.css",
+		"/D/wwwroot/lenglian_new/zh/js/lenglian.js",
+		"/D/wwwroot/lenglian_new/application/controllers/SystemLog.php",
+		"/D/wwwroot/lenglian_new/zh/js/function.js"
+	],
+	"find":
+	{
+		"height": 27.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"orderEdit",
+			"time",
+			"userInfo",
+			"token_client",
+			" class=\"sr-only\"",
+			"reqDomain",
+			"\">\n",
+			"console",
+			"orderProductList",
+			"col-xs-7",
+			"client",
+			"product",
+			"function product",
+			"userDelete()",
+			"function user",
+			"tableToolBar",
+			"post",
+			"ajax",
+			"login.html",
+			"ajax",
+			"login",
+			"-,",
+			"\"]",
+			"[\"",
+			"each",
+			"app_send_400",
+			"/public/",
+			"option =",
+			"is_valid",
+			"box_category",
+			"loadTrack",
+			"style.css",
+			"ajaxUrl",
+			"user",
+			"\t\t\n",
+			"dealData",
+			"cooler_voltage",
+			"sel_productTag",
+			"regex",
+			"box_data",
+			"level1",
+			"alarm_level",
+			"box_data"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"",
+			"col-xs-8",
+			"order",
+			"function client",
+			"contDelete()",
+			"function product",
+			",",
+			"-",
+			"->",
+			"/assets/",
+			"reqDomain"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "application/index/controller/Equipment.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3757,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2805,
+								2805
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1591.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "application/index/model/DataModel.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2901,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2828,
+								2828
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 979.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "application/index/model/EquipmentModel.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2566,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2554,
+								2557
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 648.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 48.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "medical.sublime-project",
+	"replace":
+	{
+		"height": 50.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 233.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

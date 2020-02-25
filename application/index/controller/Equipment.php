@@ -58,7 +58,7 @@ class Equipment
         function data_list(){
             //参数
             $formData = input('post.');
-            if(empty($formData['box_id'])){
+            if(empty($formData['boxId'])){
                 app_send_400('box error!');
                 die();
             }
@@ -72,7 +72,7 @@ class Equipment
             $dm = new DataModel();
 
             $params = new \STDClass;
-            $params->box_id = $formData['box_id'];
+            $params->boxId = $formData['boxId'];
             $params->startStamp = $startStamp;
             $params->endStamp = $endStamp;
 
@@ -85,8 +85,10 @@ class Equipment
         function overview(){
             //
             $em = new EquipmentModel();
+
             $res = $em->overview();
-            return $res;
+
+            app_send($res);
         }
         //设备运行时长
         function work_time(){
@@ -119,9 +121,9 @@ class Equipment
             $res['status_cold'] = $dm->workTime($params,'status_cold');
             $res['status_p4_jiaoban'] = $dm->workTime($params,'status_p4_jiaoban');
             $res['status_p4_beng1'] = $dm->workTime($params,'status_p4_beng1');
-            $res['p4_status_p4_beng2'] = $dm->workTime($params,'p4_status_p4_beng2');
+            $res['p4_status_p4_beng2'] = $dm->workTime($params,'status_p4_beng2');
             $res['status_p6_beng'] = $dm->workTime($params,'status_p6_beng');
-            
+
             app_send($res);
 
         }
