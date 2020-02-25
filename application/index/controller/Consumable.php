@@ -1,4 +1,5 @@
 <?php
+namespace app\Index\controller;
 use think\Controller;
 use think\Db;
 use app\index\model\UserModel;

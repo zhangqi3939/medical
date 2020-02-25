@@ -5,13 +5,14 @@ use think\Db;
 class ConsumableModel extends Model
 {
     //耗材保存
-    public function consumable_save($params)
+        public function consumable_save($params)
     {
-        $id = $params['id'];
-        $data['consumable_name'] = $params['consumable_name'];
-        $data['rfid'] = $params['rfid'];
+        $id = empty($params['id']) ? "" : $params['id'];
+        $data['category'] = empty($params['category']) ? "" : $params['category'];
+        $data['name'] = empty($params['name']) ? "" : $params['name'];
+        $data['rfid'] = empty($params['rfid']) ? "" : $params['rfid'];
         if(empty($id)){
-            $exit = Db::name('consumable')->where('consumable_name',$params['consumable_name'])->find();
+            $exit = Db::name('consumable')->where('rfid',$params['rfid'])->find();
             if(empty($exit)){
                 $result = Db::name('consumable')->insert($data);
             }else{

@@ -9,6 +9,7 @@ class EquipmentModel extends Model
     public function equipment_save($params)
     {
         $id = empty($params['id'])  ? "" : $params['id'];
+        $data['name'] = empty($params['name'])  ? "" : $params['name'];
         $data['project_id'] = empty($params['project_id']) ? "" : $params['project_id'];
         $data['box_id'] = empty($params['box_id']) ? "" : $params['box_id'];
         $data['install_user'] = empty($params['install_user']) ? "" : $params['install_user'];

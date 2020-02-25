@@ -13,6 +13,9 @@ class ProjectModel extends Model
         $data['remarks'] = empty($params['remarks']) ? "" : $params['remarks'];
         $data['province'] = empty($params['province']) ? "" : $params['province'];
         $data['city'] = empty($params['city']) ? "" : $params['city'];
+        $data['address'] = empty($params['address']) ? "" : $params['address'];
+        $data['lng'] = empty($params['lng']) ? "" : $params['lng'];
+        $data['lat'] = empty($params['lat']) ? "" : $params['lat'];
         $data['charge_person'] = empty($params['charge_person']) ? "" : $params['charge_person'];
         $data['gender'] = empty($params['gender']) ? "" : $params['gender'];
         $data['tel'] = empty($params['tel']) ? "" : $params['tel'];
