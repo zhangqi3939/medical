@@ -2,6 +2,7 @@
 namespace app\Index\controller;
 use think\Controller;
 use think\Db;
+use think\Loader;
 use app\index\model\UserModel;
 use app\rbac\model\RbacModel;
 use app\index\model\ConsumableModel;
@@ -22,7 +23,12 @@ class Consumable
     //耗材列表
     public function consumable_list()
     {
-        $info = Db::name('consumable')->select();
+        $info = Db::name('consumable')
+            ->alias('c')
+            ->join('equipment e','e.box_id = c.box_id','left')
+            ->join('project p','p.id = e.project_id','left')
+            ->field('c.id,c.name,c.category,c.rfid,c.flag_use,c.box_id,e.name as equipment_name,p.name as project_name,p.province,p.city,p.address,p.lng,p.lat,p.charge_person')
+            ->select();
         app_send($info);
     }
     //耗材详情
@@ -44,5 +50,69 @@ class Consumable
         }else{
             app_send('','400','耗材删除失败');
         }
+    }
+    //耗材导入
+    public function consumable_import()
+    {
+       if(request()->isPost()){
+           Loader::import('PHPExcel.PHPExcel');
+           Loader::import('PHPExcel.PHPExcel.PHPExcel_IOFactory');
+           Loader::import('PHPExcel.PHPExcel.PHPExcel_Cell');
+           $objPHPExcel = new \PHPExcel();
+           $file = request()->file('excel');
+           dump($file);
+           if($file){
+               $file_types = explode(".", $_FILES ['excel'] ['name']); // ["name"] => string(25) "excel文件名.xls"
+               $file_type = $file_types [count($file_types) - 1];//xls后缀
+               $file_name = $file_types [count($file_types) - 2];//xls去后缀的文件名
+               /*判别是不是.xls文件，判别是不是excel文件*/
+               if (strtolower($file_type) != "xls" && strtolower($file_type) != "xlsx") {
+                   echo '不是Excel文件，重新上传';
+                   die;
+               }
+               $info = $file->move(ROOT_PATH . 'public' . DS . 'excel');//上传位置
+               $path = ROOT_PATH . 'public' . DS . 'excel' . DS;
+               $file_path = $path . $info->getSaveName();//上传后的EXCEL路径
+               $consumable = new ConsumableModel();
+               $re = $consumable->actionRead($file_path, 'utf-8');
+               array_splice($re, 1, 0);
+               unset($re[0]);
+               $keys = array('category','rfid');
+               foreach ($re as $i => $vals) {
+                   $re[$i] = array_combine($keys, $vals);
+               }
+               //遍历数组写入数据库
+               for ($i = 1; $i <= count($re); $i++) {
+                   $data = $re[$i];
+                   $res = db::name('consumable')->insert($data);
+               }
+           }
+           if($res > 0){
+                app_send();
+           }else{
+               app_send('','400','耗材保存失败');
+           }
+       }else{
+           app_send('','400','请仔细核对您的信息');
+       }
+    }
+    //耗材统计
+    public function consumable_statistics()
+    {
+        //项目  使用  剩下的   总共的
+        $info = Db::name('consumable')
+            ->alias('c')
+            ->join('equipment e','e.box_id = c.box_id','left')
+            ->join('project p','p.id = e.project_id','left')
+            ->where('p.id != ""')
+            ->field('c.id as consumable_id,c.flag_use,p.id,p.name')
+            ->select();
+        $total = count(Db::name('consumable')->select());
+        $is_use = count(Db::name('consumable')->where('flag_use',1)->select());
+        $not_use = $total - $is_use;
+        $info['total'] = $total;
+        $info['is_use'] = $is_use;
+        $info['not_use'] = $not_use;
+        dump($info);
     }
 }

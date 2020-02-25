@@ -14,6 +14,7 @@ class EquipmentModel extends Model
         $data['box_id'] = empty($params['box_id']) ? "" : $params['box_id'];
         $data['install_user'] = empty($params['install_user']) ? "" : $params['install_user'];
         $data['type'] = empty($params['type']) ? "" : $params['type'];
+        $data['remarks'] = empty($params['remarks']) ? "" : $params['remarks'];
         //$data['equipment_name'] = empty($params['equipment_name']) ? "" :$params['equipment_name'];
         $data['install_time'] = time();
         if(empty($id)){

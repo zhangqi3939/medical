@@ -2,6 +2,9 @@
 namespace app\index\model;
 use think\Model;
 use think\Db;
+use PHPExcel;
+use PHPExcel_IOFactory;
+use PHPExcel_Cell;
 class ConsumableModel extends Model
 {
     //耗材保存
@@ -34,5 +37,23 @@ class ConsumableModel extends Model
     {
         $result = Db::name('consumable')->where('id',$id)->delete();
         return $result;
+    }
+    //读取xls数据
+    public function actionRead($filename,$encode='utf-8') {
+        $objReader = \PHPExcel_IOFactory::createReader('Excel2007');
+        $objReader->setReadDataOnly(true);
+        $objPHPExcel = $objReader->load($filename);
+        $objWorksheet = $objPHPExcel->getActiveSheet();
+        $highestRow = $objWorksheet->getHighestRow();
+        //return $highestRow;
+        $highestColumn = $objWorksheet->getHighestColumn();
+        $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn);
+        $excelData = array();
+        for($row = 1; $row <= $highestRow; $row++) {
+            for ($col = 0; $col < $highestColumnIndex; $col++) {
+                $excelData[$row][]=(string)$objWorksheet->getCellByColumnAndRow($col, $row)->getValue();
+            }
+        }
+        return $excelData;
     }
 }
