@@ -2,3 +2,8 @@
 composer.lock
 *.log
 thinkphp
+public/web.config
+application/database.php
+application/database.php
+application/database.php
+public/php.php

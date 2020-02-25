@@ -31,7 +31,12 @@ class EquipmentModel extends Model
     //设备详情
     public function equipment_details($id)
     {
-        $details = Db::name('equipment')->where('id',$id)->find();
+        $select = "e.*,p.name as project_name,p.province,p.city,p.address,p.charge_person,p.tel";
+        $details = Db::name('equipment')
+                    ->alias('e')
+                    ->join('project p','e.project_id = p.id','left')
+                    ->field($select)
+                    ->where('e.id',$id)->find();
         return $details;
     }
     //设备删除
@@ -39,5 +44,24 @@ class EquipmentModel extends Model
     {
         $result = Db::name('equipment')->where('id',$id)->delete();
         return $result;
+    }
+    //设备统计
+    function overview(){
+        $res = [];
+        //总数，实施数量
+            $select = "count(if(project_id>0,true,null)) as installed_num,count(1) as total_num";
+            $numRes = Db::name('equipment')->field($select)->find();
+            $res['install']=$numRes;
+        //按地市统计
+            $select = "count(1) as total_num,province,city";
+            $numRes = Db::name('equipment')
+                    ->alias('e')
+                    ->join('project p','e.project_id = p.id','left')
+                    ->field($select)
+                    ->group('p.province,p.city')
+                    //->fetchSql(true)
+                    ->select();
+            $res['city']=$numRes;
+        return $res;
     }
 }
