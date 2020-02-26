@@ -100,19 +100,20 @@ class Consumable
     public function consumable_statistics()
     {
         //项目  使用  剩下的   总共的
-        $info = Db::name('consumable')
+        $result = Db::name('consumable')
             ->alias('c')
             ->join('equipment e','e.box_id = c.box_id','left')
             ->join('project p','p.id = e.project_id','left')
-            ->where('p.id != ""')
-            ->field('c.id as consumable_id,c.flag_use,p.id,p.name')
+            //->where('p.id != ""')
+            ->field('c.id as consumable_id,c.flag_use,c.name as consumable_name,p.id as project_id,p.name as project_name')
             ->select();
         $total = count(Db::name('consumable')->select());
         $is_use = count(Db::name('consumable')->where('flag_use',1)->select());
         $not_use = $total - $is_use;
+        $info['details'] = $result;
         $info['total'] = $total;
         $info['is_use'] = $is_use;
         $info['not_use'] = $not_use;
-        dump($info);
+        app_send($info);
     }
 }

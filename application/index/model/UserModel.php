@@ -41,14 +41,18 @@ class UserModel extends Model
         }
         return $d['token'];
     }
-    //用户登录日志
-    public function saveLoginLog($uid,$remarks='用户登录'){
+    //用户日志保存
+    public function saveLog($uid,$url,$remarks){
         $d = array(
             'user_id'=>$uid,
             'remarks'=>$remarks,
-            'user_ip'=>getIP()
+            'remarks'=>$remarks,
+            'user_ip'=>getIP(),
+            'model'=>request()->module(),
+            'controller'=>request()->controller(),
+            'url'=>$url
         );
-        $sql = Db::name('log')->insert(array('user_id'=>$d['user_id'],'remarks'=>$d['remarks'],'user_ip'=>$d['user_ip'],'insert_time'=>time()));
+        $sql = Db::name('log')->insert(array('user_id'=>$d['user_id'],'remarks'=>$d['remarks'],'user_ip'=>$d['user_ip'],'model'=>$d['model'],'controller'=>$d['controller'],'url'=>$d['url'],'insert_time'=>time()));
     }
     //删除token，退出登录
     public function deleteToken($channel){

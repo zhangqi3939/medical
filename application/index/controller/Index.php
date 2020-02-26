@@ -6,10 +6,6 @@ use app\index\model\UserModel;
 use app\rbac\model\RbacModel;
 class Index
 {
-    public function index()
-    {
-
-    }
     /*
      * 用户登录
      * phoebus

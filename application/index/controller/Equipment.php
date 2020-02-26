@@ -111,7 +111,7 @@ class Equipment
             $params->startStamp = $startStamp;
             $params->endStamp = $endStamp;
             //统计类型
-            $params->category = ['status_cold','status_p4_jiaoban','status_p4_beng1','p4_status_p4_beng2','status_p6_beng'];
+            $params->category = ['status_cold','status_p4_jiaoban','status_p4_beng1','status_p4_beng2','status_p6_beng'];
 
             $dm = new DataModel();
 
@@ -121,7 +121,7 @@ class Equipment
             $res['status_cold'] = $dm->workTime($params,'status_cold');
             $res['status_p4_jiaoban'] = $dm->workTime($params,'status_p4_jiaoban');
             $res['status_p4_beng1'] = $dm->workTime($params,'status_p4_beng1');
-            $res['p4_status_p4_beng2'] = $dm->workTime($params,'status_p4_beng2');
+            $res['status_p4_beng2'] = $dm->workTime($params,'status_p4_beng2');
             $res['status_p6_beng'] = $dm->workTime($params,'status_p6_beng');
 
             app_send($res);
