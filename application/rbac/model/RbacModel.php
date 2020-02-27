@@ -12,7 +12,6 @@ class RbacModel extends Model
     //token检查
     public function checkToken($channel){
         $token = $this->getTokenFromHttp();
-        dump($token);die;
         $token = trim($token,'"');
         if(empty($token)){
             app_send('',401,'您的登录信息为空。');
@@ -103,8 +102,8 @@ class RbacModel extends Model
     public function role_save($params)
     {
         $data = array(
-            'role_name' => $params['role_name'],
-            'remarks'  => $params['remarks']
+            'role_name' => empty($params['role_name']) ? "" : $params['role_name'],
+            'remarks'  => empty($params['remarks']) ? "" : $params['remarks']
         );
         $role_id = empty($params['role_id']) ? "" : $params['role_id'];
         if(empty($role_id)){

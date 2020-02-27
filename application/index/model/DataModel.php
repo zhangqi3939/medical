@@ -19,11 +19,12 @@ class DataModel extends Model
 
         }
         empty($map) && $map=array('1'=>1);
-        $select = 'e.name,p.name as project_name,p.province,p.city,p.address,p.lng,p.lat,p.charge_person,p.tel,d.box_id,d.insert_time,d.status,d.rfid,d.status_cold,d.alarm_cold,d.switch_o2,d.pt1,d.pt2,d.pv,d.status_p4_jiaoban,d.status_p4_beng1,d.status_p4_beng2,d.status_p6_beng,d.reserve1,d.reserve2,d.reserve3,d.reserve4,d.reserve5,d.reserve6';
-        $res = Db::name('data')
+        $select = 'e.id,e.name,p.name as project_name,p.province,p.city,p.address,p.lng,p.lat,p.charge_person,p.tel,d.box_id,d.insert_time,d.status,d.rfid,d.status_cold,d.alarm_cold,d.switch_o2,d.pt1,d.pt2,d.pv,d.status_p4_jiaoban,d.status_p4_beng1,d.status_p4_beng2,d.status_p6_beng,d.reserve1,d.reserve2,d.reserve3,d.reserve4,d.reserve5,d.reserve6';
+        $res = Db::name('data_latest')
             ->alias('d')
             ->join('equipment e','d.box_id = e.box_id','left')
             ->join('project p','e.project_id = p.id','left')
+            ->order('d.insert_time desc')
             ->field($select)->select();
         return $res;
     }

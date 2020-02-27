@@ -60,7 +60,6 @@ class Consumable
            Loader::import('PHPExcel.PHPExcel.PHPExcel_Cell');
            $objPHPExcel = new \PHPExcel();
            $file = request()->file('excel');
-           dump($file);
            if($file){
                $file_types = explode(".", $_FILES ['excel'] ['name']); // ["name"] => string(25) "excel文件名.xls"
                $file_type = $file_types [count($file_types) - 1];//xls后缀

@@ -60,7 +60,11 @@ class Rbac extends Controller
     //角色列表
     public function role_list()
     {
-        $role = Db::name('rbac_role')->select();
+        $role = Db::name('rbac_role')
+            ->alias('r')
+            ->join('rbac_role_right l','r.id = l.role_id','left')
+            ->field('r.id,r.role_name,r.remarks,l.right_id')
+            ->select();
         app_send($role);
     }
     //角色删除
@@ -86,7 +90,7 @@ class Rbac extends Controller
     //权限列表
     public function right_list()
     {
-        $details = Db::name('rbac_right')->where('parent_id',0)->select();
+        $details = Db::name('rbac_right')->select();
         app_send($details);
     }
 }

@@ -23,7 +23,11 @@ class Equipment
     //设备列表
     public function equipment_list()
     {
-        $info = Db::name('equipment')->select();
+        $info = Db::name('equipment')
+            ->alias('e')
+            ->join('project p','e.project_id = p.id','left')
+            ->field('e.id,e.type,e.name as equipment_name,e.box_id,e.project_id,p.name as project_name,e.install_time,e.install_user,e.remarks')
+            ->select();
         app_send($info);
     }
     //设备详情
@@ -66,8 +70,8 @@ class Equipment
                 $endStamp = time();
                 $startStamp = $endStamp - 7*24*3600;
             }else{
-                $startStamp = strtotime($startTime);
-                $endStamp = strtotime($endTime);
+                $startStamp = strtotime($formData['startTime']);
+                $endStamp = strtotime($formData['endTime']);
             }
             $dm = new DataModel();
 
@@ -99,8 +103,8 @@ class Equipment
                 $endStamp = time();
                 $startStamp = $endStamp - 7*24*3600;
             }else{
-                $startStamp = strtotime($startTime);
-                $endStamp = strtotime($endTime);
+                $startStamp = strtotime($formData['startTime']);
+                $endStamp = strtotime($formData['endTime']);
             }
 
             //设备列表
