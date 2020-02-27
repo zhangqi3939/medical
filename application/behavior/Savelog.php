@@ -16,7 +16,7 @@ class Savelog extends Controller{
         $token_exit = $Rbac->getTokenFromHttp();
         $token_exit = trim($token_exit,'"');
         $user_info = Db::name('rbac_token')->where('token',$token_exit)->find();
-        if($url = 'index/index/user_login'){
+        if($url == 'index/index/user_login'){
             $remark = "用户登录";
             $User->saveLog($user_info['user_id'],$url,$remark);
         }else if($url == 'index/index/user_login_out'){
@@ -53,8 +53,6 @@ class Savelog extends Controller{
             $remark = "角色删除";
             $User->saveLog($user_info['user_id'],$url,$remark);
         }
-
-
     }
     private function getActionUrl()
     {
