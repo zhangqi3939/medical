@@ -11,8 +11,13 @@ class Savelog extends Controller{
         $module     = request()->module();
         $controller = request()->controller();
         $url  = $this->getActionUrl();
+
         $Rbac =  new RbacModel();
         $User =  new UserModel();
+        if($url != 'index/index/user_login'){
+            $channel = 'web';
+            $user_exit = $Rbac->checkToken($channel);
+        }
         $token_exit = $Rbac->getTokenFromHttp();
         $token_exit = trim($token_exit,'"');
         $user_info = Db::name('rbac_token')->where('token',$token_exit)->find();

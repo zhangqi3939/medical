@@ -58,7 +58,7 @@ class UserModel extends Model
     public function deleteToken($channel){
         $token = $this->getTokenFromHttp();
         $t_token = time().'';
-        $result = DB::name('token')->where('channel',$channel)->update(array('token'=>$t_token));
+        $result = DB::name('rbac_token')->where('channel',$channel)->update(array('token'=>$t_token));
         return $result;
     }
     //从请求中的到token
@@ -74,7 +74,7 @@ class UserModel extends Model
         $new_password = $params['new_password'];
         $channel = 'web';
         $user_info = $rbac->checkToken($channel);
-        if(md5($old_password) == $user_info['pass_word']){
+        if($old_password == $user_info['pass_word']){
             $result = Db::name('rbac_user')->where('id',$user_info['id'])->update(array('pass_word'=>md5($new_password)));
             if($result > 0 ){
                return true;

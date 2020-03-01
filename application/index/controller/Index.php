@@ -30,7 +30,6 @@ class Index
                         'tel'=> $userExit['tel'],
                         'token'=> $token
                     );
-                    $User->saveLoginLog($userdata['user_id']);
                     app_send($userdata);
                 }else{
                     app_send('','400','token error.');

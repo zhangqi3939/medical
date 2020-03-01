@@ -39,7 +39,7 @@ class RbacModel extends Model
         $sql = Db::name('rbac_token')->alias('T')
             ->join('rbac_user U','T.user_id = U.id','left')
             ->join('rbac_user_role R','R.user_id =  U.id','left')
-            ->field('U.id,R.role_id,U.user_name,U.tel,U.gender,U.pass_word,T.token,T.id AS token_id,T.add_time')
+            ->field('U.id,U.real_name,U.tel,U.email,R.role_id,U.user_name,U.tel,U.gender,T.token,T.id AS token_id,T.add_time')
             ->where('T.channel',$channel)
             ->where('T.token',$token)
             ->find();

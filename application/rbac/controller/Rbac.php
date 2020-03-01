@@ -24,7 +24,7 @@ class Rbac extends Controller
         $user = Db::name('rbac_user')
             ->alias('u')
             ->join('rbac_user_role r','u.id = r.user_id','left')
-            ->field('u.id,u.user_name,u.real_name,u.gender,r.role_id')
+            ->field('u.id,u.user_name,u.real_name,u.tel,u.email,u.pass_word,u.gender,r.role_id')
             ->select();
         app_send($user);
     }
