@@ -70,17 +70,19 @@ class RbacModel extends Model
         }else{
             if(empty($password)) unset($formData['user_password']);
             $res = Db::name('rbac_user')->where('id',$id)->update($formData);
-            if($res > 0) {
-                $result = Db::name('rbac_user_role')->where('user_id', $id)->update(array('user_id' => $id, 'role_id' => $role_ids));
+            if($res == true || $res === 0){
+                $result = Db::name('rbac_user_role')->where('user_id', $id)->update(array('role_id' => $role_ids));
             }
         }
-        return $result;
+        if($result ===0 || $result == true){
+            return true;
+        }
     }
     public function user_delete($id)
     {
         $channel = 'web';
         $user_info = $this->checkToken($channel);
-        $role_id = $user_info['ROLE_ID'];
+        $role_id = $user_info['role_id'];
         if($id>0){
             $res = Db::name('rbac_user')->where('id',$id)->delete();
             $result = Db::name('rbac_user_role')->where('user_id',$id)->delete();
@@ -122,7 +124,7 @@ class RbacModel extends Model
             }
         }else{
             $result = Db::name('rbac_role')->where('id',$role_id)->update($data);
-            if($result){
+            if($result == true || $result === 0){
                 $res = Db::name('rbac_role_right')->where('role_id',$role_id)->update(array(
                         'role_id'  => $role_id,
                         'right_id' => $params['right_id']
@@ -130,7 +132,9 @@ class RbacModel extends Model
                 );
             }
         }
-        return $res;
+        if($res == true || $res === 0){
+            return true;
+        }
     }
     public function role_delete($id)
     {

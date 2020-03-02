@@ -31,7 +31,9 @@ class ProjectModel extends Model
         }else{
             $result = Db::name('project ')->where('id',$id)->update($data);
         }
-        return $result;
+        if($result === 1 || $result === 0){
+            return true;
+        }
     }
     //项目详情
     public function project_details($id)

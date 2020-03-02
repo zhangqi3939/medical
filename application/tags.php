@@ -21,12 +21,15 @@ return [
     'module_init'  => [],
     // 操作开始执行
     'action_begin' => [
-        'app\\behavior\\Savelog'
+        'app\\behavior\\Savelog',
+        'app\\behavior\\Behavior'
     ],
     // 视图内容过滤
     'view_filter'  => [],
     // 日志写入
     'log_write'    => [],
     // 应用结束
-    'app_end'      => [],
+    'app_end'      => [
+
+    ],
 ];

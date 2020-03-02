@@ -24,7 +24,9 @@ class ConsumableModel extends Model
         }else{
             $result = Db::name('consumable')->where('id',$id)->update($data);
         }
-        return $result;
+        if($result === 1 || $result === 0){
+            return true;
+        }
     }
     //耗材详情
     public function consumable_details($id)

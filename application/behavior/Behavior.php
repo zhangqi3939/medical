@@ -20,32 +20,31 @@ class Behavior extends Controller{
             $Rbac =  new RbacModel();
             $token_exit = $Rbac->getTokenFromHttp();
             $token_exit = trim($token_exit,'"');
-            $uid = Db::name('token')->where('token',$token_exit)->find();
-            $user_info = Db::name('user')->where('id',$uid['user_id'])->find();
-            if(empty($user_info['id']) && !in_array($url,$this->exclude)){
+            $uid = Db::name('rbac_token')->where('token',$token_exit)->find();
+            $user_info = Db::name('rbac_user')->where('id',$uid['user_id'])->find();
+            if(empty($user_info['id'])){
                 $this->error('请先登录',    '/welcome/user_login');
             }
             $role_id = Db::name('rbac_user_role')->field('role_id')->where('user_id',$uid['user_id'])->find();
-            $role_id = explode(",", $role_id['ROLE_ID']);
-            $limit_id = Db::name('rbac_role')->field('ROLE_IN_LIMIT')->where('id','IN',$role_id)->select();
-            $data = array_column($limit_id,"ROLE_IN_LIMIT");
+            $role_id = explode(",",$role_id['role_id']);
+            $right_id = Db::name('rbac_role_right')->field('right_id')->where('id','in',$role_id)->select();
+            $data = array_column($right_id,"right_id");
             $mod = array();
             foreach($data as $key=>$value){
-                if(strpos($value,',') != false){
+                if(strpos($value,',') !== false){
                     $array = explode(',',$value);
                     $array = array_filter($array);
-                    $mod = $array+$mod;
+                    $mod = array_merge($array,$mod);
                 }
             }
+            $mod = array_unique($mod);
             $data  = array(
-                "ROLE_IN_LIMIT"=>$mod,
-                "NUMROW"=>""
+                "right_id"=>$mod
             );
-            $auth = Db::name('rbac_ right')->field('url')->where('parent_id','IN',$data['ROLE_IN_LIMIT'])->select();
             // 用户所拥有的权限路由
-            //$auth = Db::name('rbac_limit')->field('URL')->where('ID','in',$limit_id_total['ID'])->select();
-            //$auth = array_column($auth, 'URL','NUMROW');
-            if(!in_array($url, $auth) && !in_array($url, $this->exclude)) {
+            $auth = Db::name('rbac_right')->field('url')->where('id','in',$data['right_id'])->select();
+            $auth = array_column($auth, 'url');
+            if(!in_array($url, $auth)) {
                 app_send('','400','您没有操作权限，请联系管理员');
             }
 

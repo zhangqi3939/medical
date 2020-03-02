@@ -27,7 +27,9 @@ class EquipmentModel extends Model
         }else{
             $result = Db::name('equipment')->where('id',$id)->update($data);
         }
-        return $result;
+        if($result === 1 || $result === 0){
+            return true;
+        }
     }
     //设备详情
     public function equipment_details($id)

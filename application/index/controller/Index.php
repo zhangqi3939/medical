@@ -16,7 +16,7 @@ class Index
         $userName = input('post.userName');
         $userPassword = input('post.userPassword');
         $channel = input('post.channel');
-        empty($channel) && $cchannel = 'web';
+        empty($channel) && $channel = 'web';
         $where = array( 'user_name'=>$userName, 'status'=>0);
         $User = new UserModel();
         $userExit = $User->userList($where);
