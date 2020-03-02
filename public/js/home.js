@@ -1,11 +1,11 @@
 var tableRow = null
 $('#indextable').bootstrapTable({
+  height: 280,
   showColumns: true,
   showExport: true,
   search: true,
   exportDataType: 'all',
   searchTimeOut: 700,
-  height: 280,
   align: 'center',
   columns: [
     {
@@ -121,16 +121,7 @@ $('#indextable').bootstrapTable({
         return formatTime(value)
       }
     }
-  ],
-  onPostBody:function(){
-    var header = $(".fixed-table-header table thead tr th");
-    var body = $(".fixed-table-header table tbody tr td");
-    var footer = $(".fixed-table-header table tr td");
-      body.each(function(){
-      header.width((this).width());
-      footer.width((this).width());
-    });
-  }
+  ]
 })
 $('#indextable').on('click-row.bs.table',function(e,row,element){
   $(element).addClass('bg').siblings().removeClass('bg');

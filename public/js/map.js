@@ -18,7 +18,7 @@ function openPoint(row){
   var lng = row.lng;
   var lat = row.lat;
   point = new BMap.Point(lng,lat);
-  map.centerAndZoom(point, 5);
+  map.centerAndZoom(point, 15);
   map.clearOverlays();
   var pt = new BMap.Point(lng, lat);
   var myIcon = new BMap.Icon("images/addr.png", new BMap.Size(19,50));

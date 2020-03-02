@@ -5,6 +5,12 @@
   height: 300px;
   font-size: 14px;
 }
+#latestData .fixed-table-header{
+  display: none!important;
+}
+#indextable{
+  margin-top: 0!important;
+}
 #latestData tr{
   cursor: pointer;
 }
