@@ -104,7 +104,7 @@ class Consumable
             ->join('equipment e','e.box_id = c.box_id','left')
             ->join('project p','p.id = e.project_id','left')
             //->where('p.id != ""')
-            ->field('c.id as consumable_id,c.flag_use,c.name as consumable_name,p.id as project_id,p.name as project_name')
+            ->field('c.id as consumable_id,c.rfid,c.flag_use,c.name as consumable_name,p.id as project_id,p.name as project_name')
             ->select();
         $total = count(Db::name('consumable')->select());
         $is_use = count(Db::name('consumable')->where('flag_use',1)->select());
