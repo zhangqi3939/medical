@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en" class="app">
+<head>
+<meta charset="utf-8" />
+<title>肠道菌群移植设备管理系统</title>
+<meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<link rel="shortcut icon" href="images//logo.png">
+<link rel="stylesheet" href="css/app.v2.css" type="text/css" />
+<link rel="stylesheet" href="js\calendar/bootstrap_calendar.css" type="text/css" cache="false" />
+<link rel="stylesheet" href="css/common.css">
+<link rel="stylesheet" href="css/bootstrap-table.css">
+<link rel="stylesheet" href="css/bootstrap-multiselect.min.css">
+<script src="js/jquery-2.1.0.js" cache="false"></script>
+<style>
+  #equipmentList{
+    display: none!important;
+  }
+  .chart{
+    padding: 0 10px;
+  }
+  .chart,#chart{
+    height: 300px;
+  }
+</style>
+</head>
+<body>
+<section class="vbox">
+  <!-- 头部 -->
+  <header class="bg-dark dk header navbar navbar-fixed-top-xs">
+    <div class="navbar-header aside-md" style="width:350px;">
+      <a href="#" class="navbar-brand" data-toggle="fullscreen">
+        <img src="images/logo.png" class="m-r-sm">
+        肠道菌群移植设备管理系统
+      </a>
+    </div>    
+    <ul class="nav navbar-nav navbar-right hidden-xs nav-user">
+      <li class="hidden-xs">
+        <a href="#" class="dropdown-toggle dk" data-toggle="dropdown">
+          <i class="fa fa-bell"></i>
+          <span class="badge badge-sm up bg-danger m-l-n-sm count">2</span>
+        </a>
+        <!-- 报警下拉 -->
+        <ul class="dropdown-menu animated fadeInRight">
+          <li><a href="#">报警1</a></li>
+          <li><a href="#">报警2</a></li>
+        </ul>
+      </li>      
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          <span id="userName"></span>
+          <b class="caret"></b>
+        </a>
+        <!-- 用户操作 -->
+        <ul class="dropdown-menu animated fadeInRight">
+          <li><a href="#" onclick="changeUserInfo()">修改个人信息</a></li>
+          <li><a href="#" onclick="changePassword()">修改密码</a></li>
+          <li class="divider"></li>
+          <li><a href="#" onclick="logout()">退出登录</a></li>
+        </ul>
+      </li>
+    </ul>
+  </header>
+  <section>
+    <section class="hbox stretch">
+      <aside class="bg-dark lter aside-md hidden-print" id="nav">
+        <section class="vbox">
+          <section class="w-f scrollable">
+              <div class="slim-scroll" data-height="auto" data-disable-fade-out="true" data-distance="0" data-size="5px" data-color="#333333"> <!-- 导航 -->
+              <nav class="nav-primary hidden-xs">
+                <ul class="nav">
+                  <li><a href="home.html"><i class="fa fa-dashboard icon"><b class="bg-danger"></b></i><span>首页</span></a></li>
+                  <li><a href="#equipment"><i class="fa fa-bell icon"><b class="bg-primary"></b></i><span class="pull-right"><i class="fa fa-angle-down text"></i><i class="fa fa-angle-up text-active"></i></span><span>设备</span></a>
+                    <ul class="nav lt">
+                      <li><a href="project.html"><i class="fa fa-angle-right"></i><span>项目</span></a></li>
+                      <li><a href="equipment.html"><i class="fa fa-angle-right"></i><span>设备</span></a></li>
+                    </ul>
+                  </li>
+                  <li><a href="consumables.html"><i class="fa fa-flask icon"><b class="bg-success"></b></i><span>耗材</span></a></li>
+                  <li><a href="#alarm"><i class="fa fa-bell icon"><b class="bg-primary"></b></i><span class="pull-right"><i class="fa fa-angle-down text"></i><i class="fa fa-angle-up text-active"></i></span><span>报警</span></a>
+                    <ul class="nav lt">
+                      <li><a href="current_alarm.html"><i class="fa fa-angle-right"></i><span>当前报警</span></a></li>
+                      <li><a href="historical_alarm.html"><i class="fa fa-angle-right"></i><span>历史报警</span></a></li>
+                    </ul>
+                  </li>
+                  <li class="active"><a href="#statistics"><i class="fa fa-list-ol"><b class="bg-primary dker"></b></i><span class="pull-right"><i class="fa fa-angle-down text"></i><i class="fa fa-angle-up text-active"></i></span><span>统计</span></a>
+                    <ul class="nav lt">
+                      <li class="active"><a href="run_time_statistics.html"><i class="fa fa-angle-right"></i><span>运行时长</span></a></li>
+                      <li><a href="equipment_statistics.html"><i class="fa fa-angle-right"></i><span>设备统计</span></a></li>
+                      <li><a href="consumable_statistics.html"><i class="fa fa-angle-right"></i><span>耗材统计</span></a></li>
+                    </ul>
+                  </li>
+                  <li><a href="#system"><i class="fa fa-windows"><b class="bg-info"></b></i><span class="pull-right"><i class="fa fa-angle-down text"></i><i class="fa fa-angle-up text-active"></i></span><span>系统</span></a>
+                    <ul class="nav lt">
+                      <li><a href="user.html"><i class="fa fa-angle-right"></i><span>用户</span></a></li>
+                      <li><a href="role.html"><i class="fa fa-angle-right"></i><span>角色</span></a></li>
+                      <li><a href="privileges.html"><i class="fa fa-angle-right"></i><span>权限</span></a></li>                  
+                    </ul>
+                  </li>                  
+                </ul>
+              </nav>
+            </div>
+          </section>
+          <footer class="footer lt hidden-xs b-t b-dark">            
+            <a href="#nav" data-toggle="class:nav-xs" class="pull-right btn btn-sm btn-dark btn-icon"><i class="fa fa-angle-left text"></i><i class="fa fa-angle-right text-active"></i></a>
+          </footer>
+        </section>
+      </aside>
+      <!-- 内容 -->
+    <section id="content">
+      <section class="vbox">
+        <div class="opGroup">
+          <select id="equipmentList" multiple class="form-control"></select>
+          <b>起止时间：</b>
+          <input type="text" id="startTime" class="form-control" onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm'})" placeholder="请选择开始时间" autocomplete="off">
+          <b>--</b>
+          <input type="text" id="endTime" class="form-control" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm',minDate:'#F{$dp.$D(\'startTime\')}'});" placeholder="请选择结束时间" autocomplete="off">
+          <button class="btn btn-default" onclick="getWorkTime()">查询</button>
+        </div>
+        <div class="indexTable col-sm-12">
+          <table id="indexTable" width="100%" class="table table-bordered dataTable flow-table table-hover table-striped"></table>
+        </div>
+        <div class="chart col-sm-12">
+          <div id="chart"></div>
+        </div>
+      </section>
+    </section>
+  </section>
+</section>
+<script src="js/app.v2.js"></script>
+<script src="js/bootstrap-table.js"></script>
+<script src="js/bootstrap-table-zh-CN.min.js"></script>
+<script src="js/tableExport.min.js"></script>
+<script src="js/bootstrap-table-export.min.js"></script>
+<script src="js/bootstrap-multiselect.min.js"></script>
+<script src="js/echarts.js"></script>
+<script src="js/date/WdatePicker.js"></script>
+<script src="js/layer/layer.js"></script>
+<script src="js/reqDomain.js"></script>
+<script src="js/md5.js"></script>
+<script src="js/common.js"></script>
+<script>
+  $(function(){
+    getEquipmentList()
+    getWorkTime()
+  })
+  var tableData = [];
+  $('#indexTable').bootstrapTable({
+    clickToSelect: true,
+    height: document.getElementsByTagName('body')[0].scrollHeight-380,
+    showColumns: true,
+    showExport: true,
+    sortName: 'box_id',
+    search: true,
+    exportDataType: 'all',
+    searchTimeOut: 700,
+    toolbar: '.opGroup',
+    columns: [
+      {
+        title: '序号',
+        formatter: function(value,row,index){
+          return index + 1
+        }
+      },{
+        title: '设备id',
+        field: 'box_id',
+      },{
+        title: '制冷运行时间（秒）',
+        field: 'status_cold',
+      },{
+        title: '子流程4-搅拌电机运行时间（秒）',
+        field: 'status_p4_jiaoban',
+      },{
+        title: '子流程4-一级错流泵运行时间（秒）',
+        field: 'status_p4_beng1',
+      },{
+        title: '子流程4-二级错流泵运行时间（秒）',
+        field: 'status_p4_beng2',
+      },{
+        title: '子流程6-除氧真空泵运行时间（秒）',
+        field: 'status_p6_beng',
+      }
+    ],
+    onPostBody:function(){
+      var header = $(".fixed-table-header table thead tr th");
+      var body = $(".fixed-table-header table tbody tr td");
+      var footer = $(".fixed-table-header table tr td");
+        body.each(function(){
+        header.width((this).width());
+        footer.width((this).width());
+      });
+    }
+  })
+  function getEquipmentList(){
+    $.ajax({
+      async: false,
+      type: "post",
+      url: reqDomain + "/index/equipment/equipment_list",
+      dataType: "json",
+      success: function (data) {
+        if(data.code == 200){
+          for(var i=0;i<data.result.length;i++){
+            $('#equipmentList').append('<option value="'+data.result[i].box_id+'">'+data.result[i].name+'</option>');
+          }
+          $('#equipmentList').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: true,
+            buttonWidth: 200,
+            allSelectedText:'所有项目',
+            maxHeight: 300,
+            selectAllText: '全选'
+          })
+        }
+      }
+    });
+  }
+  function getWorkTime(){
+    $.ajax({
+      type: "post",
+      url: reqDomain + "/index/equipment/work_time",
+      data: {
+        boxIds: $('#equipmentList').val(),
+        startTime: $('#startTime').val(),
+        endTime: $('#endTime').val()
+      },
+      dataType: "json",
+      success: function (data) {
+        if(data.code == 200){
+          var timeStrip = data.result.timeStrip
+          var status_p4_jiaoban,status_p4_beng1,status_p4_beng2,status_p6_beng;
+          var xData = [];
+          var status_cold_arr = [];
+          var status_p4_jiaoban_arr = [];
+          var status_p4_beng1_arr = [];
+          var status_p4_beng2_arr = []
+          var status_p6_beng_arr = []
+          for(var i=0;i<data.result.status_cold.length;i++){
+            data.result.status_p4_jiaoban.forEach(function(e){
+              if(e.box_id == data.result.status_cold[i].box_id){
+                status_p4_jiaoban = e.total_num*timeStrip
+              }
+            })
+            data.result.status_p4_beng1.forEach(function(e){
+              if(e.box_id == data.result.status_cold[i].box_id){
+                status_p4_beng1 = e.total_num*timeStrip
+              }
+            })
+            data.result.status_p4_beng2.forEach(function(e){
+              if(e.box_id == data.result.status_cold[i].box_id){
+                status_p4_beng2 = e.total_num*timeStrip
+              }
+            })
+            data.result.status_p6_beng.forEach(function(e){
+              if(e.box_id == data.result.status_cold[i].box_id){
+                status_p6_beng = e.total_num*timeStrip
+              }
+            })
+            tableData.push({
+              'box_id': data.result.status_cold[i].box_id,
+              'status_cold': data.result.status_cold[i].total_num*timeStrip,
+              'status_p4_jiaoban': status_p4_jiaoban,
+              'status_p4_beng1': status_p4_beng1,
+              'status_p4_beng2': status_p4_beng2,
+              'status_p6_beng': status_p6_beng
+            })
+          }
+          $('#indexTable').bootstrapTable('load', tableData);
+          for(var i=0;i<data.result.status_cold.length;i++){
+            xData.push(data.result.status_cold[i].box_id);
+            status_cold_arr.push(data.result.status_cold[i].total_num*timeStrip)
+          }
+          for(var i=0;i<data.result.status_p4_jiaoban.length;i++){
+            status_p4_jiaoban_arr.push(data.result.status_cold[i].total_num*timeStrip)
+          }
+          for(var i=0;i<data.result.status_p4_beng1.length;i++){
+            status_p4_beng1_arr.push(data.result.status_cold[i].total_num*timeStrip)
+          }
+          for(var i=0;i<data.result.status_p4_beng2.length;i++){
+            status_p4_beng2_arr.push(data.result.status_cold[i].total_num*timeStrip)
+          }
+          for(var i=0;i<data.result.status_p6_beng.length;i++){
+            status_p6_beng_arr.push(data.result.status_cold[i].total_num*timeStrip)
+          }
+          var chart = echarts.init(document.getElementById('chart'));
+          option = {
+            tooltip : {
+              trigger: 'axis'
+            },
+            legend: {
+              top:0,
+              data: ["制冷运行时间", "子流程4-搅拌电机运行时间", "子流程4-一级错流泵运行时间", "子流程4-二级错流泵运行时间", "子流程6-除氧真空泵运行时间"]
+            },
+            xAxis : [
+              {
+                type : 'category',
+                data : xData,
+                "axisLabel":{
+                  interval: 0
+                }
+              }
+            ],
+            yAxis : [
+              {
+                type : 'value',
+                name: '运行时长（秒）'
+              }
+            ],
+            grid: {
+              top: 30,
+              left: '3%',
+              right: '3%',
+              bottom: '1%',
+              containLabel: true
+            },
+            toolbox: {
+              feature: {
+                saveAsImage: {}//保存成图片
+              }
+            },
+            dataZoom:[
+              {
+                type:'inside',
+                start:0,
+                end:100,
+              },
+              {
+                show:true,
+                type:'slider',
+                y:'90%',
+                start:50,
+                end:100
+              }
+            ],
+            series : [
+              {
+                name:'制冷运行时间',
+                type:'bar',
+                data:status_cold_arr,
+              },
+              {
+                name:'子流程4-搅拌电机运行时间',
+                type:'bar',
+                data:status_p4_jiaoban_arr
+              },
+              {
+                name:'子流程4-一级错流泵运行时间',
+                type:'bar',
+                data:status_p4_beng1_arr
+              },
+              {
+                name:'子流程4-二级错流泵运行时间',
+                type:'bar',
+                data:status_p4_beng2_arr
+              },
+              {
+                name:'子流程6-除氧真空泵运行时间',
+                type:'bar',
+                data:status_p6_beng_arr
+              }
+            ]
+          };
+          chart.setOption(option);
+          $(window).resize(function() {
+            setTimeout(function(){
+              chart.resize();
+            },10)              
+          });
+        }
+      }
+    });
+  }
+</script>
+</body>
+</html>

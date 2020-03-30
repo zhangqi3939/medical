@@ -580,6 +580,10 @@
 	"expanded_folders":
 	[
 		"/D/wwwroot/medical_php",
+		"/D/wwwroot/medical_php/application",
+		"/D/wwwroot/medical_php/application/index",
+		"/D/wwwroot/medical_php/application/index/controller",
+		"/D/wwwroot/medical_php/application/index/model",
 		"/D/wwwroot/medical_php/thinkphp"
 	],
 	"file_history":
@@ -816,7 +820,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1752.8,
+						"translation.y": 1591.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -846,7 +850,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 781.0,
+						"translation.y": 979.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,

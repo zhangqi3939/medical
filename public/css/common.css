@@ -1,0 +1,103 @@
+#content>.vbox{
+  display: block;
+}
+.opGroup{
+  /* padding: 10px; */
+}
+.opGroup .form-control{
+  display: inline-block!important;
+  width: auto;
+}
+.opGroup b{
+  margin: 0 10px;
+}
+.opGroup b:first-child{
+  margin-left: 0;
+}
+.indexTable{
+  padding: 0 10px;
+}
+.indexTable table tr.bg td{background-color: #e6e6e6;}
+.indexTable table tr{cursor: pointer;}
+/* 遮罩层 */
+.mask{
+  background: rgba(46,62,78,0.8);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+}
+.mask>div{
+  position: absolute;
+  background-color: white;
+}
+.mask .close{
+  outline: none;
+}
+.mask table td{
+  height: 36px;
+  padding: 0 10px;
+}
+.mask table tr td:first-child{
+  text-align: right;
+  width: 45%;
+}
+.mask label{margin-right: 10px;}
+.mask input[type=checkbox]{
+  margin-right: 5px;
+}
+.mask textarea{
+  resize: none;
+}
+.mask .save{
+  display: block;
+  margin: 10px auto 0;
+}
+/* 修改密码 */
+.changeMask{
+  background: rgba(46,62,78,0.8);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.changeMask label{margin-right: 10px;}
+.changeMask input[type=checkbox]{
+  margin-right: 5px;
+}
+.changePassword{
+  position: absolute;
+  width: 500px;
+  height: 200px;
+  background-color: white;
+  top: 50%;
+  left: 50%;
+  margin: -100px 0 0 -250px;
+}
+.changeUserInfo{
+  position: absolute;
+  width: 500px;
+  min-height: 350px;
+  background-color: white;
+  top: 50%;
+  left: 50%;
+  margin: -200px 0 0 -250px;
+}
+.changeMask .close{
+  outline: none;
+}
+.changeMask .saveBtn{
+  display: block;
+  margin: 10px auto 0;
+}
+.changeMask table td{
+  height: 36px;
+  padding: 0 10px;
+}
+.changeMask table tr td:first-child{
+  text-align: right;
+  width: 45%;
+}
