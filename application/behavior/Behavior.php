@@ -23,7 +23,7 @@ class Behavior extends Controller{
             $uid = Db::name('rbac_token')->where('token',$token_exit)->find();
             $user_info = Db::name('rbac_user')->where('id',$uid['user_id'])->find();
             if($url != 'index/index/user_login') {
-                if (empty($user_info['id'])) {
+                if (empty($user_info)) {
                     app_send('', 401, '您的登录信息失效。');
                 }
             }
@@ -46,8 +46,10 @@ class Behavior extends Controller{
             // 用户所拥有的权限路由
             $auth = Db::name('rbac_right')->field('url')->where('id','in',$data['right_id'])->select();
             $auth = array_column($auth, 'url');
-            if(!in_array($url, $auth)) {
-                app_send('','400','您没有操作权限，请联系管理员');
+            if($url !== "index/index/user_login"){
+                if(!in_array($url, $auth) ) {
+                    app_send('','400','您没有操作权限，请联系管理员');
+                }
             }
         }catch (Exception $ex) {
             //print_r($ex);

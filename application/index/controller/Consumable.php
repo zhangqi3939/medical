@@ -1,12 +1,13 @@
 <?php
-namespace app\Index\controller;
+namespace app\index\controller;
 use think\Controller;
 use think\Db;
 use think\Loader;
-use app\index\model\UserModel;
-use app\rbac\model\RbacModel;
+use PHPExcel;
+use PHPExcel_IOFactory;
+use PHPExcel_Cell;
 use app\index\model\ConsumableModel;
-class Consumable
+class Consumable extends Controller
 {
     //耗材保存
     public function consumable_save()
@@ -74,9 +75,10 @@ class Consumable
                $file_path = $path . $info->getSaveName();//上传后的EXCEL路径
                $consumable = new ConsumableModel();
                $re = $consumable->actionRead($file_path, 'utf-8');
+               dump($re);die;
                array_splice($re, 1, 0);
                unset($re[0]);
-               $keys = array('category','rfid');
+               $keys = array('category','rfid','batch','customer','sale_time');
                foreach ($re as $i => $vals) {
                    $re[$i] = array_combine($keys, $vals);
                }
@@ -114,5 +116,17 @@ class Consumable
         $info['is_use'] = $is_use;
         $info['not_use'] = $not_use;
         app_send($info);
+    }
+    //耗材状态标记
+    public function consumable_mark()
+    {
+        $data = input('post.');
+        $consumable = new ConsumableModel();
+        $result = $consumable->consumable_mark_save($data);
+        if($result > 0){
+            app_send();
+        }else{
+            app_send_400('耗材标记失败，请联系管理员');
+        }
     }
 }

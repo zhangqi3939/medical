@@ -39,6 +39,9 @@ class Savelog extends Controller{
         }else if($url == "index/consumable/consumable_delete"){
             $remark = "耗材删除";
             $User->saveLog($user_info['user_id'],$url,$remark);
+        }else if($url == "index/consumable/consumable_mark"){
+            $remark = "耗材标记";
+            $User->saveLog($user_info['user_id'],$url,$remark);
         }else if($url == "index/project/project_save"){
             $remark = "设备保存";
             $User->saveLog($user_info['user_id'],$url,$remark);

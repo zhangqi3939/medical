@@ -97,7 +97,6 @@ class Equipment
         //设备运行时长
         function work_time(){
             $formData = input('post.');
-
             //起止时间
             if(empty($formData['startTime']) || empty($formData['endTime'])){
                 $endStamp = time();
@@ -106,10 +105,8 @@ class Equipment
                 $startStamp = strtotime($formData['startTime']);
                 $endStamp = strtotime($formData['endTime']);
             }
-
             //设备列表
-            $boxIds = empty($formData['boxIds[]']) ? array() : $formData['boxIds[]'];
-
+            $boxIds = empty($formData['boxIds']) ? array() : $formData['boxIds'];
             $params = new \STDClass;
             $params->boxIds = $boxIds;
             $params->startStamp = $startStamp;

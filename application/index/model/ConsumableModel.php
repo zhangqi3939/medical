@@ -58,4 +58,15 @@ class ConsumableModel extends Model
         }
         return $excelData;
     }
+    //耗材标记保存
+    public function consumable_mark_save($params)
+    {
+        $id = $params['id'];
+        $data['status'] = empty($params['status']) ? "" : $params['status'];
+        $data['remark'] = empty($params['remark']) ? "" : $params['remark'];
+        $result = Db::name('consumable')->where('id', $id)->update($data);
+        if ($result === 1 || $result === 0) {
+            return true;
+        }
+    }
 }
