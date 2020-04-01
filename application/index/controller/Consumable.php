@@ -28,7 +28,7 @@ class Consumable extends Controller
             ->alias('c')
             ->join('equipment e','e.box_id = c.box_id','left')
             ->join('project p','p.id = e.project_id','left')
-            ->field('c.id,c.name,c.category,c.rfid,c.flag_use,c.box_id,e.name as equipment_name,p.name as project_name,p.province,p.city,p.address,p.lng,p.lat,p.charge_person')
+            ->field('c.id,c.name,c.category,c.rfid,c.flag_use,c.box_id,c.status,c.sale_time,c.batch,c.remark,c.customer,e.name as equipment_name,p.name as project_name,p.province,p.city,p.address,p.lng,p.lat,p.charge_person')
             ->select();
         app_send($info);
     }

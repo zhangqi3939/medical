@@ -14,6 +14,9 @@ class ConsumableModel extends Model
         $data['category'] = empty($params['category']) ? "" : $params['category'];
         $data['name'] = empty($params['name']) ? "" : $params['name'];
         $data['rfid'] = empty($params['rfid']) ? "" : $params['rfid'];
+        $data['batch'] = empty($params['batch']) ? "" : $params['batch'];
+        $data['customer'] = empty($params['customer']) ? "" : $params['customer'];
+        $data['sale_time'] = empty($params['sale_time']) ? "" : $params['sale_time'];
         if(empty($id)){
             $exit = Db::name('consumable')->where('rfid',$params['rfid'])->find();
             if(empty($exit)){

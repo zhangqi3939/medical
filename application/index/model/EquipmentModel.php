@@ -18,9 +18,15 @@ class EquipmentModel extends Model
         //$data['equipment_name'] = empty($params['equipment_name']) ? "" :$params['equipment_name'];
         $data['install_time'] = time();
         if(empty($id)){
-            $exit = Db::name('equipment')->where('box_id',$params['box_id'])->find();
+            $exit = Db::name('equipment')->where('box_id',$data['box_id'])->where('name',$data['name'])->find();
             if(empty($exit)){
                 $result = Db::name('equipment')->insert($data);
+                $box_id = $params['box_id'];
+                $time = time();
+                if($result >0 ){
+                    $sql = "INSERT INTO md_data_latest (box_id,insert_time) VALUES ( $box_id , $time )";
+                    $res = Db::execute($sql);
+                }
             }else{
                 app_send('', '400', '设备已存在,请仔细核对设备名称');
             }
@@ -45,6 +51,8 @@ class EquipmentModel extends Model
     //设备删除
     public function equipment_delete($id)
     {
+        $info = Db::name('equipment')->where('id',$id)->find();
+        Db::name('data_latest')->where('box_id',$info['box_id'])->delete();
         $result = Db::name('equipment')->where('id',$id)->delete();
         return $result;
     }
