@@ -113,11 +113,8 @@ class Equipment
             $params->endStamp = $endStamp;
             //统计类型
             $params->category = ['status_cold','status_p4_jiaoban','status_p4_beng1','status_p4_beng2','status_p6_beng'];
-
             $dm = new DataModel();
-
             $res = [];
-
             $res['timeStrip'] = 30;
             $res['status_cold'] = $dm->workTime($params,'status_cold');
             $res['status_p4_jiaoban'] = $dm->workTime($params,'status_p4_jiaoban');
@@ -125,5 +122,16 @@ class Equipment
             $res['status_p4_beng2'] = $dm->workTime($params,'status_p4_beng2');
             $res['status_p6_beng'] = $dm->workTime($params,'status_p6_beng');
             app_send($res);
+        }
+        //报警信息
+        public function alarm_info()
+        {
+            $alarm = Db::name('data_latest')
+                ->alias('d')
+                ->field('d.box_id,d.alarm_cold,e.name')
+                ->join('equipment e','e.box_id = d.box_id','left')
+                ->where('d.alarm_cold',1)
+                ->select();
+            app_send($alarm);
         }
 }

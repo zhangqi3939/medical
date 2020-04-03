@@ -61,6 +61,10 @@ class Consumable extends Controller
            Loader::import('PHPExcel.PHPExcel.PHPExcel_Cell');
            $objPHPExcel = new \PHPExcel();
            $file = request()->file('excel');
+           if(empty($file)){
+                app_send_400('请选择耗材文件');
+                exit();
+           }
            if($file){
                $file_types = explode(".", $_FILES ['excel'] ['name']); // ["name"] => string(25) "excel文件名.xls"
                $file_type = $file_types [count($file_types) - 1];//xls后缀
@@ -75,11 +79,18 @@ class Consumable extends Controller
                $file_path = $path . $info->getSaveName();//上传后的EXCEL路径
                $consumable = new ConsumableModel();
                $re = $consumable->actionRead($file_path, 'utf-8');
-               dump($re);die;
                array_splice($re, 1, 0);
                unset($re[0]);
-               $keys = array('category','rfid','batch','customer','sale_time');
+               $keys = array('name','category','rfid','batch','customer','sale_time','remark');
                foreach ($re as $i => $vals) {
+
+                    empty($vals[0]) ? $vals[0] = "" : $vals[0];
+                    empty($vals[1]) ? $vals[1] = 1 : $vals[1];
+                    empty($vals[2]) ? $vals[2] = "" : $vals[2];
+                    empty($vals[3]) ? $vals[3] = "" : $vals[3];
+                    empty($vals[4]) ? $vals[4] = "" : $vals[4];
+                    empty($vals[5]) ? $vals[5] = time() : $vals[5] = strtotime($vals[5]);
+                    empty($vals[6]) ? $vals[6] = "" : $vals[6];
                    $re[$i] = array_combine($keys, $vals);
                }
                //遍历数组写入数据库
