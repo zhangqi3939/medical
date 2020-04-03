@@ -124,8 +124,6 @@ class Equipment
             $res['status_p4_beng1'] = $dm->workTime($params,'status_p4_beng1');
             $res['status_p4_beng2'] = $dm->workTime($params,'status_p4_beng2');
             $res['status_p6_beng'] = $dm->workTime($params,'status_p6_beng');
-
             app_send($res);
-
         }
 }

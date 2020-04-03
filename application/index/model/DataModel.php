@@ -75,8 +75,21 @@ class DataModel extends Model
                 ->where("{$category}",1)
                 ->where($where)
                 ->group('box_id')
-                //->fetchSql(true)
                 ->select();
+        $result = Db::name('data')->where($where)->select();
+        foreach($result as $value) {
+            $box_id[] = $value['box_id'];
+        }
+        $box_id = array_unique($box_id);
+        $reserve4 = [];
+        foreach($box_id as $value){
+            $w = [];
+            $w['insert_time'] = ['between',"{$params->startStamp},{$params->endStamp}"];
+            $l = Db::name('data')->where('box_id',$value)->field('reserve4')->order('insert_time asc')->limit(1)->where($w)->find();
+            $t = Db::name('data')->where('box_id',$value)->field('reserve4')->order('insert_time desc')->limit(1)->where($w)->find();
+            $reserve4["$value"] = $t['reserve4'] - $l['reserve4'];
+        }
+        $res['reserve4'] = $reserve4;
         return $res;
     }
 }

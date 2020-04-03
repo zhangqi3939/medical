@@ -18,13 +18,14 @@ class EquipmentModel extends Model
         //$data['equipment_name'] = empty($params['equipment_name']) ? "" :$params['equipment_name'];
         $data['install_time'] = time();
         if(empty($id)){
-            $exit = Db::name('equipment')->where('box_id',$data['box_id'])->where('name',$data['name'])->find();
-            if(empty($exit)){
+            $exit_box_id = Db::name('equipment')->where('box_id',$data['box_id'])->find();
+            $exit_box_name = Db::name('equipment')->where('name',$data['name'])->find();
+            if(empty($exit_box_id) && empty($exit_box_name)){
                 $result = Db::name('equipment')->insert($data);
                 $box_id = $params['box_id'];
                 $time = time();
                 if($result >0 ){
-                    $sql = "INSERT INTO md_data_latest (box_id,insert_time) VALUES ( $box_id , $time )";
+                    $sql = "INSERT INTO md_data_latest (box_id,insert_time) VALUES ('".$box_id."' , $time )";
                     $res = Db::execute($sql);
                 }
             }else{

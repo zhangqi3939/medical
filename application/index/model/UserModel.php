@@ -74,8 +74,12 @@ class UserModel extends Model
         $new_password = $params['new_password'];
         $channel = 'web';
         $user_info = $rbac->checkToken($channel);
-        if($old_password == $user_info['pass_word']){
-            $result = Db::name('rbac_user')->where('id',$user_info['id'])->update(array('pass_word'=>md5($new_password)));
+        if(empty($user_info['id'])){
+           app_send_400('用户登录信息失效,请重新登录');
+        }
+        $user = Db::name('rbac_user')->where('id',$user_info['id'])->find();
+        if($old_password == $user['pass_word']){
+            $result = Db::name('rbac_user')->where('id',$user_info['id'])->update(array('pass_word'=>$new_password));
             if($result > 0 ){
                return true;
             }else{
