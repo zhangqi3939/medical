@@ -42,17 +42,21 @@ class UserModel extends Model
         return $d['token'];
     }
     //用户日志保存
-    public function saveLog($uid,$url,$remarks){
+    public function saveLog($uid,$url,$original_data="",$new_data="",$remarks){
         $d = array(
             'user_id'=>$uid,
             'remarks'=>$remarks,
-            'remarks'=>$remarks,
+            'original_data'=>$original_data,
+            'new_data'=>$new_data,
             'user_ip'=>getIP(),
             'model'=>request()->module(),
             'controller'=>request()->controller(),
-            'url'=>$url
+            'url'=>$url,
+            'insert_time'=>time()
         );
-        $sql = Db::name('log')->insert(array('user_id'=>$d['user_id'],'remarks'=>$d['remarks'],'user_ip'=>$d['user_ip'],'model'=>$d['model'],'controller'=>$d['controller'],'url'=>$d['url'],'insert_time'=>time()));
+        //$sql = Db::name('log')->fetchSql(true)->insert(array('user_id'=>$d['user_id'],'new_data'=>$d['new_data'],'orginal_data'=>$d['orginal_data'],'remarks'=>$d['remarks'],'user_ip'=>$d['user_ip'],'model'=>$d['model'],'controller'=>$d['controller'],'url'=>$d['url'],'insert_time'=>time()));
+        $sql = Db::name('log')->insert($d);
+
     }
     //删除token，退出登录
     public function deleteToken($channel){

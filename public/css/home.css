@@ -87,8 +87,9 @@
 /* 设备信息 */
 #box_info{
   padding: 5px;
-  width: 50%;
+  width: 100%;
   list-style: none;
+  border-bottom: 1px solid #ddd;
 }
 #box_info::after{
   content: '';
@@ -98,6 +99,39 @@
 #box_info li{
   float: left;
   width: 33%;
+}
+/* 电机运行时间 */
+#run_time{
+  width: 100%;
+  list-style: none;
+  padding: 5px;
+  overflow: hidden;
+  border-bottom: 1px solid #ddd;
+}
+#run_time li{
+  width: 33%;
+  float: left;
+}
+/* 密码次数配置 */
+#config{
+  padding: 5px;
+  list-style: none; 
+  overflow: hidden;  
+}
+#config li{
+  float: left;
+  width: 33%;
+}
+.config{
+  width: 300px;
+  text-align: center;
+}
+.config label{
+  margin: 5px auto;
+}
+.config input.form-control{
+  width: auto;
+  display: inline-block;
 }
 /* 数据查询 */
 #dataTable{

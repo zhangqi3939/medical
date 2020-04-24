@@ -220,3 +220,24 @@ function logout(){
 	})
 }
 // 报警显示
+function alarm(){
+	$.ajax({
+		type: "post",
+		url: reqDomain + "/index/equipment/alarm_info",
+		dataType: "json",
+		success: function (data) {
+			if(data.code == 200){				
+				if(data.result.length == 0){
+					$('#alarm-header-list').html('<li><a href="#">暂无报警</a></li>');
+				}else{
+					$('#alarmNum').text(data.result.length);
+					var str = ''
+					for(var i=0;i<data.result.length;i++){
+						str += '<li><a href="#">'+data.result[i].name+'（'+parseInt(data.result[i].box_id).toString(16)+'）：'+(data.result[i].alarm_cold==1?'制冷报警':'')+'</a></li>'
+					}
+					$('#alarm-header-list').html(str)
+				}
+			}
+		}
+	});
+}

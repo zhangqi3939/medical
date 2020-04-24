@@ -2,10 +2,10 @@
 <html lang="en" class="app">
 <head>
 <meta charset="utf-8" />
-<title>肠道菌群移植设备管理系统</title>
+<title>肠道微生态全菌群自动化提取设备管理系统</title>
 <meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-<link rel="shortcut icon" href="images//logo.png">
+<link rel="shortcut icon" href="images/logo.png">
 <link rel="stylesheet" href="css/app.v2.css" type="text/css" />
 <link rel="stylesheet" href="js\calendar/bootstrap_calendar.css" type="text/css" cache="false" />
 <link rel="stylesheet" href="css/common.css">
@@ -44,23 +44,20 @@
 <section class="vbox">
   <!-- 头部 -->
   <header class="bg-dark dk header navbar navbar-fixed-top-xs">
-    <div class="navbar-header aside-md" style="width:350px;">
+    <div class="navbar-header aside-md" style="width:600px;">
       <a href="#" class="navbar-brand" data-toggle="fullscreen">
-        <img src="images/logo.png" class="m-r-sm">
-        肠道菌群移植设备管理系统
+        <img class="logo" src="images/logo.png" class="m-r-sm">
+        肠道微生态全菌群自动化提取设备管理系统
       </a>
     </div>    
     <ul class="nav navbar-nav navbar-right hidden-xs nav-user">
       <li class="hidden-xs">
         <a href="#" class="dropdown-toggle dk" data-toggle="dropdown">
           <i class="fa fa-bell"></i>
-          <span class="badge badge-sm up bg-danger m-l-n-sm count">2</span>
+          <span id="alarmNum" class="badge badge-sm up bg-danger m-l-n-sm">0</span>
         </a>
         <!-- 报警下拉 -->
-        <ul class="dropdown-menu animated fadeInRight">
-          <li><a href="#">报警1</a></li>
-          <li><a href="#">报警2</a></li>
-        </ul>
+        <ul class="dropdown-menu animated fadeInRight" id="alarm-header-list"></ul>
       </li>      
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -88,7 +85,7 @@
                   <li><a href="home.html"><i class="fa fa-dashboard icon"><b class="bg-danger"></b></i><span>首页</span></a></li>
                   <li class="active"><a href="#equipment"><i class="fa fa-bell icon"><b class="bg-primary"></b></i><span class="pull-right"><i class="fa fa-angle-down text"></i><i class="fa fa-angle-up text-active"></i></span><span>设备</span></a>
                     <ul class="nav lt">
-                      <li class="active"><a href="project.html"><i class="fa fa-angle-right"></i><span>项目</span></a></li>
+                      <li class="active"><a href="project.html"><i class="fa fa-angle-right"></i><span>用户</span></a></li>
                       <li><a href="equipment.html"><i class="fa fa-angle-right"></i><span>设备</span></a></li>
                     </ul>
                   </li>
@@ -151,6 +148,7 @@
 <script>
   $(function(){
     getProjectList()
+    alarm()
   })
   var tableRow = null
   var lng,lat;
@@ -620,7 +618,7 @@
           return index + 1
         }
       },{
-        title: '项目名称',
+        title: '用户名称',
         field: 'name',
       },{
         title: '备注详情',
@@ -635,7 +633,7 @@
         title: '具体实施地点',
         field: 'address'
       },{
-        title: '项目负责人',
+        title: '用户负责人',
         field: 'charge_person'
       },{
         title:'性别',
@@ -665,7 +663,7 @@
     $(element).addClass('bg').siblings().removeClass('bg');
     tableRow = row;
   })
-  // 项目列表
+  // 用户列表
   function getProjectList(){
     $.ajax({
       type: "post",
@@ -678,17 +676,17 @@
       }
     });
   }
-  // 添加项目
+  // 添加用户
   function addProject(){
     (function(){
       var str = '<div class="addProject">'+
-                '<div class="popover-title">添加项目'+
+                '<div class="popover-title">添加用户'+
                   '<button type="button" class="close pullright">&times;</button>'+
                 '</div>'+
                 '<div class="popover-content">'+
                   '<table>'+                  
                     '<tr>'+
-                      '<td>项目名：</td>'+
+                      '<td>用户名：</td>'+
                       '<td><input type="text" id="name" class="form-control"></td>'+
                     '</tr>'+
                     '<tr>'+
@@ -717,7 +715,7 @@
                       '<td><button class="btn btn-default" id="showMap">点击获取经纬度</button></td>'+
                     '</tr>'+
                     '<tr>'+
-                      '<td>项目负责人</td>'+
+                      '<td>用户负责人</td>'+
                       '<td><input type="text" id="charge_person" class="form-control"></td>'+
                     '</tr>'+
                     '<tr>'+
@@ -794,11 +792,11 @@
     // 添加保存
     $('.save').click(function(){
       if($('#name').val() == ''){
-        layer.msg('项目名不能为空')
+        layer.msg('用户名不能为空')
       }else if($('#charge_person').val() == ''){
-        layer.msg('项目负责人不能为空')
+        layer.msg('用户负责人不能为空')
       }else if($('#lnglat').val() == 0){
-        layer.msg('项目经纬度不能为空')
+        layer.msg('用户经纬度不能为空')
       }else{
         $.ajax({
           type: "post",
@@ -832,21 +830,21 @@
       $('.mask').empty().hide()
     })
   }
-  // 修改项目
+  // 修改用户
   function changeProject(){
     if(tableRow == null){
-      layer.msg('请选择一个项目');
+      layer.msg('请选择一个用户');
       return false
     }
     (function(){
       var str = '<div class="addProject">'+
-                '<div class="popover-title">修改项目'+
+                '<div class="popover-title">修改用户'+
                   '<button type="button" class="close pullright">&times;</button>'+
                 '</div>'+
                 '<div class="popover-content">'+
                   '<table>'+                  
                     '<tr>'+
-                      '<td>项目名：</td>'+
+                      '<td>用户名：</td>'+
                       '<td><input type="text" id="name" class="form-control"></td>'+
                     '</tr>'+
                     '<tr>'+
@@ -875,7 +873,7 @@
                       '<td><button class="btn btn-default" id="showMap">点击获取经纬度</button></td>'+
                     '</tr>'+
                     '<tr>'+
-                      '<td>项目负责人</td>'+
+                      '<td>用户负责人</td>'+
                       '<td><input type="text" id="charge_person" class="form-control"></td>'+
                     '</tr>'+
                     '<tr>'+
@@ -973,11 +971,11 @@
     // 修改保存
     $('.save').click(function(){
       if($('#name').val() == ''){
-        layer.msg('项目名不能为空')
+        layer.msg('用户名不能为空')
       }else if($('#charge_person').val() == ''){
-        layer.msg('项目负责人不能为空')
+        layer.msg('用户负责人不能为空')
       }else if($('#lnglat').val() == 0){
-        layer.msg('项目经纬度不能为空')
+        layer.msg('用户经纬度不能为空')
       }else{
         $.ajax({
           type: "post",
@@ -1013,13 +1011,13 @@
       $('.mask').empty().hide()
     })
   }
-  // 删除项目
+  // 删除用户
   function deleteProject(){
     if(tableRow == null){
-      layer.msg('请选择一个项目');
+      layer.msg('请选择一个用户');
       return false
     }
-    layer.confirm('确定要删除该项目么？',function(){
+    layer.confirm('确定要删除该用户么？',function(){
       $.ajax({
         type: "post",
         url: reqDomain + "/index/project/project_delete",

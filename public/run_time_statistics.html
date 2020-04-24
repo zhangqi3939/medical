@@ -2,10 +2,10 @@
 <html lang="en" class="app">
 <head>
 <meta charset="utf-8" />
-<title>肠道菌群移植设备管理系统</title>
+<title>肠道微生态全菌群自动化提取设备管理系统</title>
 <meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-<link rel="shortcut icon" href="images//logo.png">
+<link rel="shortcut icon" href="images/logo.png">
 <link rel="stylesheet" href="css/app.v2.css" type="text/css" />
 <link rel="stylesheet" href="js\calendar/bootstrap_calendar.css" type="text/css" cache="false" />
 <link rel="stylesheet" href="css/common.css">
@@ -28,23 +28,20 @@
 <section class="vbox">
   <!-- 头部 -->
   <header class="bg-dark dk header navbar navbar-fixed-top-xs">
-    <div class="navbar-header aside-md" style="width:350px;">
+    <div class="navbar-header aside-md" style="width:600px;">
       <a href="#" class="navbar-brand" data-toggle="fullscreen">
-        <img src="images/logo.png" class="m-r-sm">
-        肠道菌群移植设备管理系统
+        <img class="logo" src="images/logo.png" class="m-r-sm">
+        肠道微生态全菌群自动化提取设备管理系统
       </a>
     </div>    
     <ul class="nav navbar-nav navbar-right hidden-xs nav-user">
       <li class="hidden-xs">
         <a href="#" class="dropdown-toggle dk" data-toggle="dropdown">
           <i class="fa fa-bell"></i>
-          <span class="badge badge-sm up bg-danger m-l-n-sm count">2</span>
+          <span id="alarmNum" class="badge badge-sm up bg-danger m-l-n-sm">0</span>
         </a>
         <!-- 报警下拉 -->
-        <ul class="dropdown-menu animated fadeInRight">
-          <li><a href="#">报警1</a></li>
-          <li><a href="#">报警2</a></li>
-        </ul>
+        <ul class="dropdown-menu animated fadeInRight" id="alarm-header-list"></ul>
       </li>      
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -72,7 +69,7 @@
                   <li><a href="home.html"><i class="fa fa-dashboard icon"><b class="bg-danger"></b></i><span>首页</span></a></li>
                   <li><a href="#equipment"><i class="fa fa-bell icon"><b class="bg-primary"></b></i><span class="pull-right"><i class="fa fa-angle-down text"></i><i class="fa fa-angle-up text-active"></i></span><span>设备</span></a>
                     <ul class="nav lt">
-                      <li><a href="project.html"><i class="fa fa-angle-right"></i><span>项目</span></a></li>
+                      <li><a href="project.html"><i class="fa fa-angle-right"></i><span>用户</span></a></li>
                       <li><a href="equipment.html"><i class="fa fa-angle-right"></i><span>设备</span></a></li>
                     </ul>
                   </li>
@@ -143,8 +140,8 @@
   $(function(){
     getEquipmentList()
     getWorkTime()
-  })
-  var tableData = [];
+    alarm()
+  })  
   $('#indexTable').bootstrapTable({
     clickToSelect: true,
     height: document.getElementsByTagName('body')[0].scrollHeight-380,
@@ -165,20 +162,14 @@
         title: '设备id',
         field: 'box_id',
       },{
-        title: '制冷运行时间（秒）',
-        field: 'status_cold',
-      },{
-        title: '子流程4-搅拌电机运行时间（秒）',
+        title: '搅拌电机运行时间（分）',
         field: 'status_p4_jiaoban',
       },{
-        title: '子流程4-一级错流泵运行时间（秒）',
+        title: '一级错流泵运行时间（分）',
         field: 'status_p4_beng1',
       },{
-        title: '子流程4-二级错流泵运行时间（秒）',
+        title: '二级错流泵运行时间（分）',
         field: 'status_p4_beng2',
-      },{
-        title: '子流程6-除氧真空泵运行时间（秒）',
-        field: 'status_p6_beng',
       }
     ],
     onPostBody:function(){
@@ -200,13 +191,13 @@
       success: function (data) {
         if(data.code == 200){
           for(var i=0;i<data.result.length;i++){
-            $('#equipmentList').append('<option value="'+data.result[i].box_id+'">'+data.result[i].name+'</option>');
+            $('#equipmentList').append('<option value="'+data.result[i].box_id+'">'+data.result[i].equipment_name+'</option>');
           }
           $('#equipmentList').multiselect({
             includeSelectAllOption: true,
             enableFiltering: true,
             buttonWidth: 200,
-            allSelectedText:'所有项目',
+            allSelectedText:'所有用户',
             maxHeight: 300,
             selectAllText: '全选'
           })
@@ -226,61 +217,25 @@
       dataType: "json",
       success: function (data) {
         if(data.code == 200){
-          var timeStrip = data.result.timeStrip
-          var status_p4_jiaoban,status_p4_beng1,status_p4_beng2,status_p6_beng;
+          var tableData = [];
+          var status_p4_jiaoban,status_p4_beng1,status_p4_beng2
           var xData = [];
-          var status_cold_arr = [];
           var status_p4_jiaoban_arr = [];
           var status_p4_beng1_arr = [];
           var status_p4_beng2_arr = []
-          var status_p6_beng_arr = []
-          for(var i=0;i<data.result.status_cold.length;i++){
-            data.result.status_p4_jiaoban.forEach(function(e){
-              if(e.box_id == data.result.status_cold[i].box_id){
-                status_p4_jiaoban = e.total_num*timeStrip
-              }
-            })
-            data.result.status_p4_beng1.forEach(function(e){
-              if(e.box_id == data.result.status_cold[i].box_id){
-                status_p4_beng1 = e.total_num*timeStrip
-              }
-            })
-            data.result.status_p4_beng2.forEach(function(e){
-              if(e.box_id == data.result.status_cold[i].box_id){
-                status_p4_beng2 = e.total_num*timeStrip
-              }
-            })
-            data.result.status_p6_beng.forEach(function(e){
-              if(e.box_id == data.result.status_cold[i].box_id){
-                status_p6_beng = e.total_num*timeStrip
-              }
-            })
+          for(var k in data.result.status_cold.reserve4){
+            xData.push(parseInt(k).toString(16));
             tableData.push({
-              'box_id': data.result.status_cold[i].box_id,
-              'status_cold': data.result.status_cold[i].total_num*timeStrip,
-              'status_p4_jiaoban': status_p4_jiaoban,
-              'status_p4_beng1': status_p4_beng1,
-              'status_p4_beng2': status_p4_beng2,
-              'status_p6_beng': status_p6_beng
+              'box_id': parseInt(k).toString(16),
+              'status_p4_jiaoban': data.result.status_cold.reserve4[k]*2,
+              'status_p4_beng1':  data.result.status_cold.reserve4[k]*30,
+              'status_p4_beng2':  data.result.status_cold.reserve4[k]*30,
             })
+            status_p4_jiaoban_arr.push(data.result.status_cold.reserve4[k]*2)
+            status_p4_beng1_arr.push(data.result.status_cold.reserve4[k]*30)
+            status_p4_beng2_arr.push(data.result.status_cold.reserve4[k]*30)
           }
           $('#indexTable').bootstrapTable('load', tableData);
-          for(var i=0;i<data.result.status_cold.length;i++){
-            xData.push(data.result.status_cold[i].box_id);
-            status_cold_arr.push(data.result.status_cold[i].total_num*timeStrip)
-          }
-          for(var i=0;i<data.result.status_p4_jiaoban.length;i++){
-            status_p4_jiaoban_arr.push(data.result.status_cold[i].total_num*timeStrip)
-          }
-          for(var i=0;i<data.result.status_p4_beng1.length;i++){
-            status_p4_beng1_arr.push(data.result.status_cold[i].total_num*timeStrip)
-          }
-          for(var i=0;i<data.result.status_p4_beng2.length;i++){
-            status_p4_beng2_arr.push(data.result.status_cold[i].total_num*timeStrip)
-          }
-          for(var i=0;i<data.result.status_p6_beng.length;i++){
-            status_p6_beng_arr.push(data.result.status_cold[i].total_num*timeStrip)
-          }
           var chart = echarts.init(document.getElementById('chart'));
           option = {
             tooltip : {
@@ -288,7 +243,7 @@
             },
             legend: {
               top:0,
-              data: ["制冷运行时间", "子流程4-搅拌电机运行时间", "子流程4-一级错流泵运行时间", "子流程4-二级错流泵运行时间", "子流程6-除氧真空泵运行时间"]
+              data: ["搅拌电机运行时间", "一级错流泵运行时间", "二级错流泵运行时间"]
             },
             xAxis : [
               {
@@ -302,7 +257,7 @@
             yAxis : [
               {
                 type : 'value',
-                name: '运行时长（秒）'
+                name: '运行时间（分）'
               }
             ],
             grid: {
@@ -333,29 +288,19 @@
             ],
             series : [
               {
-                name:'制冷运行时间',
-                type:'bar',
-                data:status_cold_arr,
-              },
-              {
-                name:'子流程4-搅拌电机运行时间',
+                name:'搅拌电机运行时间',
                 type:'bar',
                 data:status_p4_jiaoban_arr
               },
               {
-                name:'子流程4-一级错流泵运行时间',
+                name:'一级错流泵运行时间',
                 type:'bar',
                 data:status_p4_beng1_arr
               },
               {
-                name:'子流程4-二级错流泵运行时间',
+                name:'二级错流泵运行时间',
                 type:'bar',
                 data:status_p4_beng2_arr
-              },
-              {
-                name:'子流程6-除氧真空泵运行时间',
-                type:'bar',
-                data:status_p6_beng_arr
               }
             ]
           };

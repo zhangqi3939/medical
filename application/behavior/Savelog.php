@@ -5,6 +5,7 @@ use think\Exception;
 use think\Db;
 use app\rbac\model\RbacModel;
 use app\index\model\UserModel;
+use app\index\model\EquipmentModel;
 class Savelog extends Controller{
 
     public function run(&$params){
@@ -14,6 +15,7 @@ class Savelog extends Controller{
 
         $Rbac =  new RbacModel();
         $User =  new UserModel();
+        $Equipment =  new EquipmentModel();
         if($url != 'index/index/user_login'){
             $channel = 'web';
             $user_exit = $Rbac->checkToken($channel);
@@ -33,6 +35,17 @@ class Savelog extends Controller{
         }else if($url == "index/equipment/equipment_delete"){
             $remark = "设备删除";
             $User->saveLog($user_info['user_id'],$url,$remark);
+        }
+        else if($url == "index/equipment/set_super_secret"){
+            $data = input('post.');
+            $original_data = Db::name('param')->where('box_id',$data['box_id'])->field('super_secret')->find();
+            $original_data = $original_data['super_secret'];
+            $new_data = $data['super_secret'];
+            $result = $Equipment->set_super_secret($data);
+            if($result == true){
+                $remark = "设置超级密码";
+                $User->saveLog($user_info['user_id'],$url,$original_data,$new_data,$remark);
+            }
         }else if($url == "index/consumable/consumable_save"){
             $remark = "耗材保存";
             $User->saveLog($user_info['user_id'],$url,$remark);

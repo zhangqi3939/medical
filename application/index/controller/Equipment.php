@@ -135,19 +135,32 @@ class Equipment
             app_send($alarm);
         }
         //配置超级密码
-        public function set_super_password()
+        public function set_super_secret()
         {
             $data = input('post.');
             if(empty($data['box_id'])){
                 app_send_400('请选择您要配置超级密码的设备');
             }
-            empty($data['super_password']) && $data['super_password'] = '';
-            empty($data['num']) && $data['num'] = '';
-            $result = Db::name('equipment')->where('box_id',$data['box_id'])->update(array('super_password'=>$data['super_password'],'num'=>$data['num']));
-            if($result == 1){
+            empty($data['super_secret']) && $data['super_secret'] = '';
+            empty($data['super_secret_use_cnts']) && $data['super_secret_use_cnts'] = '';
+            $Equipment = new EquipmentModel();
+            $result = $Equipment->set_super_secret($data);
+            if($result == true){
                 app_send();
             }else{
                 app_send_400('超级密码配置失败');
+            }
+        }
+        //超级密码配置信息详情
+        public function param_info()
+        {
+            $box_id = input('post.box_id');
+            if(empty($box_id)){
+                app_send_400('请选择您要配置超级密码的设备');
+            }
+            $param = Db::name('param')->where('box_id',$box_id)->field('box_id,super_secret,super_secret_use_cnts')->find();
+            if(!empty($param)){
+                app_send($param);
             }
         }
 }

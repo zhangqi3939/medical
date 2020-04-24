@@ -1,4 +1,5 @@
-var tableRow = null
+var tableRow = null;
+var box_info = null;
 $('#indextable').bootstrapTable({
   height: 280,
   showColumns: true,
@@ -16,20 +17,23 @@ $('#indextable').bootstrapTable({
       title: '设备id',
       field: 'box_id',
       sortable: true,
+      formatter: function(value){
+        return parseInt(value).toString(16)
+      }
     },{
-      title: '设备实施项目',
+      title: '用户',
       field: 'project_name',
       sortable: true,
     },{
-      title: '实施省份',
+      title: '省',
       field: 'province',
       sortable: true,
     },{
-      title: '实施城市',
+      title: '市',
       field: 'city',
       sortable: true,
     },{
-      title: '实施地点',
+      title: '地址',
       field: 'address',
       sortable: true,
     },{
@@ -38,15 +42,20 @@ $('#indextable').bootstrapTable({
       sortable: true,
     },{
       title: '负责人电话',
-      field: 'rel',
+      field: 'tel',
     },{
       title: '设备运行状态',
       field: 'status',
       sortable: true,
-    },{
-      title: 'RFID码',
-      field: 'rfid',
-      sortable: true,
+      formatter: function(value){
+        if(value == 3){
+          return '开始'
+        }else if(value == 4){
+          return '停止'
+        }else{
+          return '暂停'
+        }
+      }
     },{
       title: '制冷状态',
       field: 'status_cold',
@@ -58,6 +67,9 @@ $('#indextable').bootstrapTable({
       title: '制冷温度报警',
       field: 'alarm_cold',
       sortable: true,
+      formatter: function(value){
+        return value == 1?'开':'关'
+      }
     },{
       title: '除氧状态',
       field: 'switch_o2',
@@ -66,40 +78,55 @@ $('#indextable').bootstrapTable({
         return value == 1?'开':'关'
       }
     },{
-      title: '冷端温度',
+      title: '冷端温度（℃）',
       field: 'pt1',
       sortable: true,
+      formatter: function(value){
+        if(value != 0 && value != null && value != -999 && value != undefined){
+          return value/10
+        }
+      }
     },{
-      title: '热端温度',
+      title: '热端温度（℃）',
       field: 'pt2',
       sortable: true,
+      formatter: function(value){
+        if(value != 0 && value != null && value != -999 && value != undefined){
+          return value/10
+        }
+      }
     },{
-      title: '含氧量',
+      title: '含氧量（%）',
       field: 'pv',
       sortable: true,
+      formatter: function(value){
+        if(value != 0 && value != null && value != -999 && value != undefined){
+          return value/10
+        }
+      }
     },{
-      title: '子流程4-搅拌电机-状态',
+      title: '搅拌电机',
       field: 'status_p4_jiaoban',
       sortable: true,
       formatter: function(value){
         return value == 1?'开':'关'
       }
     },{
-      title: '子流程4-一级错流泵-状态',
+      title: '一级错流泵',
       field: 'status_p4_beng1',
       sortable: true,
       formatter: function(value){
         return value == 1?'开':'关'
       }
     },{
-      title: '子流程4-二级错流泵-状态',
+      title: '二级错流泵',
       field: 'status_p4_beng2',
       sortable: true,
       formatter: function(value){
         return value == 1?'开':'关'
       }
     },{
-      title: '子流程6-除氧真空泵-状态',
+      title: '除氧真空泵',
       field: 'status_p6_beng',
       sortable: true,
       formatter: function(value){
@@ -181,10 +208,10 @@ function boxInfo(row){
     dataType: "json",
     success: function (data) {
       if(data.code == 200){
+        box_info = data.result;
         var str = '<li>设备名称：'+data.result.name+'</li>'+
                   '<li>设备id：'+data.result.box_id+'</li>'+
-                  // '<li>设备类型：'+data.result.+'</li>'+
-                  '<li>设备实施项目：'+data.result.project_name+'</li>'+
+                  '<li>用户：'+data.result.project_name+'</li>'+
                   '<li>负责人：'+data.result.charge_person+'</li>'+
                   '<li>负责人电话：'+data.result.tel+'</li>'+
                   '<li>省份：'+data.result.province+'</li>'+
@@ -193,9 +220,60 @@ function boxInfo(row){
                   '<li>备注：'+data.result.remarks+'</li>'+
                   '<li>实施时间：'+formatTime(data.result.install_time)+'</li>'
         $('#box_info').html(str);
+        var runTimeStr = '<li>搅拌机单词运行时长（分）：2</li>'+
+                         '<li>一级错流泵运行时间（分）：'+data.result.param_config_t5+'</li>'+
+                         '<li>二级错流泵运行时间（分）：'+data.result.param_config_t4+'</li>';
+        $('#run_time').html(runTimeStr)
+        var cfgStr = '<li>超级密码：'+data.result.super_password+'</li>'+
+                      '<li>剩余次数：'+data.result.num+'</li>'+
+                      '<li><button type="button" class="btn btn-default btn-xs" onclick="config()">配置</button></li>';
+        $('#config').html(cfgStr)
       }
     }
   });
+}
+// 配置密码
+function config(){
+  if(tableRow == null){
+    layer.msg('先选择一个项目！');
+    return false;
+  }
+  layer.open({
+    id: 1,
+    type: 1,
+    title: tableRow.name + '密码次数配置',
+    content: "<div class='config'>"+
+              "<label>超级密码：<input type='text' class='form-control' id='cfgPassword' value='"+box_info.super_password+"'/></label>"+
+              "<label>剩余次数：<input type='text' class='form-control' id='cfgTimes' value='"+box_info.num+"'/></label>"+
+            "</div>",
+    btn: ['确认','取消'],
+    yes: function(index, layero){
+      layer.confirm('确定要配置此参数么？',function(){
+        $.ajax({
+          type: "post",
+          url: reqDomain + "/index/equipment/set_super_password",
+          data: {
+            box_id: tableRow.box_id,
+            super_password: $('#cfgPassword').val(),
+            num: $('#cfgTimes').val()
+          },
+          dataType: "json",
+          success: function (data) {
+            if(data.code == 200){
+              layer.msg('设置成功');
+              boxInfo(tableRow);
+              setTimeout(function(){
+                layer.closeAll()
+              }, 500);
+            }
+          }
+        });
+      })
+    },
+    no: function(index,layero){
+      layer.close(index)
+    }
+  })
 }
 // 历史数据
 function pivot(){
@@ -214,7 +292,7 @@ function pivot(){
           showColumns: true,
           showExport: true,
           exportDataType: 'all',
-          striped : true, 
+          striped : true,           
           pageNumber : 1,
           pagination : true,
           toolbar: '#boxDataOp',
@@ -224,63 +302,84 @@ function pivot(){
             {
               title: '设备id',
               field: 'box_id',
+              formatter: function(value){
+                return parseInt(value).toString(16)
+              }
             },{
               title: '设备运行状态',
               field: 'status',
-            },{
-              title: 'RFID码',
-              field: 'rfid', 
+              sortable: true,
+              formatter: function(value){
+                if(value == 3){
+                  return '开始'
+                }else if(value == 4){
+                  return '停止'
+                }else{
+                  return '暂停'
+                }
+              }
             },{
               title: '制冷状态',
               field: 'status_cold',
-              formatTime: function(value){
+              sortable: true,
+              formatter: function(value){
                 return value == '1'?'开':'关'
               }
             },{
               title: '制冷温度报警',
               field: 'alarm_cold',
+              sortable: true,
             },{
               title: '除氧状态',
               field: 'switch_o2',
-              formatTime: function(value){
+              sortable: true,
+              formatter: function(value){
                 return value == '1'?'开':'关'
               }
             },{
               title: '冷端温度',
               field: 'pt1',
+              sortable: true,
             },{
               title: '热端温度',
               field: 'pt2',
+              sortable: true,
             },{
               title: '含氧量',
               field: 'pv',
+              sortable: true,
             },{
-              title: '子流程4-搅拌电机-状态',
+              title: '搅拌电机',
               field: 'status_p4_jiaoban',
+              sortable: true,
               formatter: function(value){
                 return value == 1?'开':'关'
               }
             },{
-              title: '子流程4-一级错流泵-状态',
+              title: '一级错流泵',
               field: 'status_p4_beng1',
+              sortable: true,
               formatter: function(value){
                 return value == 1?'开':'关'
               }
             },{
-              title: '子流程4-二级错流泵-状态',
+              title: '二级错流泵',
               field: 'status_p4_beng2',
+              sortable: true,
               formatter: function(value){
                 return value == 1?'开':'关'
               }
             },{
-              title: '子流程6-除氧真空泵-状态',
+              title: '除氧真空泵',
               field: 'status_p6_beng',
+              sortable: true,
               formatter: function(value){
                 return value == 1?'开':'关'
               }
             },{
               title: '数据时间',
               field: 'insert_time',
+              sortable: true,
               formatter: function(value){
                 return formatTime(value)
               }
@@ -360,7 +459,7 @@ function curve(){
 						trigger: 'axis'
 					},
 					legend: {
-						data: ['设备运行状态', '制冷状态', '制冷温度报警', '除氧状态', '冷端温度','	热端温度','含氧量','子流程4-搅拌电机-状态','子流程4-一级错流泵-状态','子流程4-二级错流泵-状态','子流程6-除氧真空泵-状态'],
+						data: ['设备运行状态', '制冷状态', '制冷温度报警', '除氧状态', '冷端温度','	热端温度','含氧量','搅拌电机','一级错流泵','二级错流泵','除氧真空泵'],
 						right: 30,
 						top: 10,
 					},

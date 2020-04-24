@@ -1,8 +1,11 @@
+.logo{
+  margin-right: 10px;
+  width: 30px;
+  max-height: 30px!important;
+  display: inline-block;
+}
 #content>.vbox{
   display: block;
-}
-.opGroup{
-  /* padding: 10px; */
 }
 .opGroup .form-control{
   display: inline-block!important;

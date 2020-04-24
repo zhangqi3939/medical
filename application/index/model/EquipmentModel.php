@@ -25,6 +25,7 @@ class EquipmentModel extends Model
                 $box_id = $params['box_id'];
                 $time = time();
                 if($result >0 ){
+                    $param = Db::name('param')->insert(array('box_id'=>$params['box_id'],'insert_time'=>$time));
                     $sql = "INSERT INTO md_data_latest (box_id,insert_time) VALUES ('".$box_id."' , $time )";
                     $res = Db::execute($sql);
                 }
@@ -76,5 +77,13 @@ class EquipmentModel extends Model
                     ->select();
             $res['city']=$numRes;
         return $res;
+    }
+    //超级密码保存
+    public function set_super_secret($params)
+    {
+        $result = Db::name('param')->where('box_id',$params['box_id'])->update(array('super_secret'=>$params['super_secret'],'super_secret_use_cnts'=>$params['super_secret_use_cnts']));
+        if($result == 1 || $result == 0 ){
+            return true;
+        }
     }
 }
