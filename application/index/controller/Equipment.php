@@ -141,12 +141,15 @@ class Equipment
             if(empty($data['box_id'])){
                 app_send_400('请选择您要配置超级密码的设备');
             }
+            $old_super_secret = Db::name('param')->where('box_id',$data['box_id'])->field('super_secret')->find();
+            empty($old_super_secret) && $old_super_secret = [];
             empty($data['super_secret']) && $data['super_secret'] = '';
             empty($data['super_secret_use_cnts']) && $data['super_secret_use_cnts'] = '';
             $Equipment = new EquipmentModel();
             $result = $Equipment->set_super_secret($data);
+            $logArr = ['itemID'=>json_encode(array('box_id'=>$data['box_id'])),'from'=>json_encode($old_super_secret),'to'=>json_encode(array('super_secret'=>$data['super_secret']))];
             if($result == true){
-                app_send();
+                app_send('',$logArr);
             }else{
                 app_send_400('超级密码配置失败');
             }
