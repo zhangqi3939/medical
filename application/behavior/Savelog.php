@@ -10,8 +10,9 @@ class Savelog extends Controller{
 
     // 定义需要排除的权限路由
     protected $exclude = [
-        'index/index/user_login',//登录
+        //'index/index/user_login',//登录
         //'index/index/user_login_out',//退出
+        'index/index/user_password_change',//修改密码
         'index/equipment/equipment_save',//设备保存
         'index/equipment/equipment_delete',//设备删除
         'index/equipment/set_super_secret',//设置超级密码
@@ -33,6 +34,9 @@ class Savelog extends Controller{
             if(!empty($headers['token'])){
                 $token = $headers['token'];
                 $user_info = Db::name('rbac_token')->where('token',$token)->find();
+                if(empty($user_info)){
+                    app_send_400('您的登录信息为空，请重新登录');
+                }
             }
             $d = array(
                 'user_id'=>$user_info['user_id'],
