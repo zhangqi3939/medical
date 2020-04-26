@@ -131,3 +131,11 @@ function long2mem($v){
 function short2mem($v){
     return  chr($v & 255). chr(($v >> 8 ) & 255);
 }
+function getActionUrl()
+{
+    $module     = request()->module();
+    $controller = request()->controller();
+    $action     = request()->action();
+    $url        = $module.'/'.$controller.'/'.$action;
+    return strtolower($url);
+}
