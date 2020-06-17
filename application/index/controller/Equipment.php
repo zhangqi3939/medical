@@ -14,8 +14,9 @@ class Equipment
         $data = input('post.');
         $Equipment = new EquipmentModel();
         $result = $Equipment->equipment_save($data);
+        $logArr = ['itemID'=>json_encode(array('box_id'=>$data['box_id'])),'from'=>json_encode(array('name'=>$data['name'],'box_id'=>$data['box_id'],'project_id'=>$data['project_id'],'remarks'=>$data['remarks'])),'to'=>json_encode(array('name'=>$data['name'],'box_id'=>$data['box_id'],'project_id'=>$data['project_id'],'remarks'=>$data['remarks']))];
         if($result > 0){
-            app_send();
+            app_send('',$logArr);
         }else{
             app_send('','400','设备保存失败');
         }
@@ -42,10 +43,12 @@ class Equipment
     public function equipment_delete()
     {
         $id = input('post.id');
+        $data = Db::name('equipment')->where('id',$id)->find();
         $Equipment = new EquipmentModel();
         $result = $Equipment->equipment_delete($id);
+        $logArr = ['itemID'=>json_encode(array('box_id'=>$data['box_id'])),'from'=>'','to'=>json_encode(array('result'=>'设备已删除'))];
         if($result > 0){
-            app_send();
+            app_send('',$logArr);
         }else{
             app_send('','400','设备删除失败');
         }
@@ -141,12 +144,15 @@ class Equipment
             if(empty($data['box_id'])){
                 app_send_400('请选择您要配置超级密码的设备');
             }
+            $old_super_secret = Db::name('param')->where('box_id',$data['box_id'])->field('super_secret')->find();
+            empty($old_super_secret) && $old_super_secret = [];
             empty($data['super_secret']) && $data['super_secret'] = '';
             empty($data['super_secret_use_cnts']) && $data['super_secret_use_cnts'] = '';
             $Equipment = new EquipmentModel();
             $result = $Equipment->set_super_secret($data);
+            $logArr = ['itemID'=>json_encode(array('box_id'=>$data['box_id'])),'from'=>json_encode($old_super_secret),'to'=>json_encode(array('super_secret'=>$data['super_secret']))];
             if($result == true){
-                app_send();
+                app_send('',$logArr);
             }else{
                 app_send_400('超级密码配置失败');
             }

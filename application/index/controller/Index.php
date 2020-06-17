@@ -30,6 +30,7 @@ class Index
                         'tel'=> $userExit['tel'],
                         'token'=> $token
                     );
+                    Db::name('log')->insert(array('user_id'=>$userExit["id"],'item_id'=>json_encode(array('user_id'=>$userExit["id"])),'user_ip'=>getIP(),'remarks'=>'用户登录','model'=>request()->module(),'controller'=>request()->controller(),'url'=>getActionUrl(),'insert_time'=>time()));
                     app_send($userdata);
                 }else{
                     app_send('','400','token error.');
@@ -48,8 +49,11 @@ class Index
     {
         $User =  new UserModel();
         $channel = 'web';
+        $token = $User->getTokenFromHttp();
+        $userExit = Db::name('rbac_token')->where('token',$token)->find();
         $result = $User->deleteToken($channel);
         if($result>0){
+            Db::name('log')->insert(array('user_id'=>$userExit["user_id"],'item_id'=>json_encode(array('user_id'=>$userExit["id"])),'user_ip'=>getIP(),'remarks'=>'用户退出','model'=>request()->module(),'controller'=>request()->controller(),'url'=>getActionUrl(),'insert_time'=>time()));
             app_send();
         }else{
             app_send('','400','退出失败，请联系管理员');
@@ -68,9 +72,12 @@ class Index
     {
         $data = input('post.');
         $User =  new UserModel();
+        $token = $User->getTokenFromHttp();
+        $userExit = Db::name('rbac_token')->where('token',$token)->find();
         $result = $User->user_password_change($data);
+        $logArr = ['itemID'=>json_encode(array('user_id'=>$userExit['user_id'])),'from'=>json_encode(array('pass_word'=>$data['old_password'])),'to'=>json_encode(array('pass_word'=>$data['new_password']))];
         if($result == true){
-            app_send();
+            app_send('',$logArr);
         }else{
             app_send('','400','源密码错误');
         }

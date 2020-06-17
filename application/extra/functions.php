@@ -40,20 +40,45 @@ function curl_get($url){
 function send_json($data){
     header('Content-Type: application/json');
     echo json_encode($data);
-    exit();
 }
 
-function app_send($data='',$code='200',$reason=''){
+/*function app_send($data='',$code='200',$reason=''){
     send_json(array(
         'code'=>$code,
         'reason'=>$reason,
         'result'=>$data
     ));
+}*/
+function app_send($data='',$code='200',$reason='',$logArr=[]){
+    header('Content-Type: application/json');
+    //默认返回
+    $d=['code'=>$code,'reason'=>$reason,'result'=>$data];
+    //传入参数
+    $params = func_get_args();
+    $paramsNum = count($params);
+    //两个参数  $data  $logArr或者四个参数都传,保存log入住到request
+    if($paramsNum == 2 || $paramsNum == 4){
+        \think\Request::instance()->logArr = $params[$paramsNum-1];
+        $d=['code'=>200,'reason'=>$reason,'result'=>$data];
+    }
+    //return json($d)->send();
+    send_json($d);
 }
-
-function app_send_400($reason=''){
+/*function app_send_400($reason=''){
     app_send('',400,$reason);
     exit();
+}*/
+//返回400错误
+function app_send_400($reason='',$logArr=[]){
+    if(empty($logArr)){
+        return app_send('',400,$reason);
+    }else{
+        return app_send('',400,$reason,$logArr);
+    }
+}
+//返回401错误
+function app_send_401($reason=''){
+    return app_send('',400,$reason);
 }
 //获取IP
 function getIP(){
@@ -105,4 +130,12 @@ function long2mem($v){
 }
 function short2mem($v){
     return  chr($v & 255). chr(($v >> 8 ) & 255);
+}
+function getActionUrl()
+{
+    $module     = request()->module();
+    $controller = request()->controller();
+    $action     = request()->action();
+    $url        = $module.'/'.$controller.'/'.$action;
+    return strtolower($url);
 }

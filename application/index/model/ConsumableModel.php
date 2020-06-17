@@ -12,6 +12,7 @@ class ConsumableModel extends Model
     {
         $id = empty($params['id']) ? "" : $params['id'];
         $data['category'] = empty($params['category']) ? "" : $params['category'];
+        $data['flag_use'] = empty($params['flag_use']) ? "" : $params['flag_use'];
         $data['name'] = empty($params['name']) ? "" : $params['name'];
         $data['rfid'] = empty($params['rfid']) ? "" : $params['rfid'];
         $data['batch'] = empty($params['batch']) ? "" : $params['batch'];

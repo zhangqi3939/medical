@@ -8,71 +8,50 @@ use app\index\model\UserModel;
 use app\index\model\EquipmentModel;
 class Savelog extends Controller{
 
+    // 定义需要排除的权限路由
+    protected $exclude = [
+        //'index/index/user_login',//登录
+        //'index/index/user_login_out',//退出
+        'index/index/user_password_change',//修改密码
+        'index/equipment/equipment_save',//设备保存
+        'index/equipment/equipment_delete',//设备删除
+        'index/equipment/set_super_secret',//设置超级密码
+        'index/consumable/consumable_save',//耗材保存
+        'index/consumable/consumable_delete',//耗材删除
+        'index/consumable/consumable_mark',//耗材标记
+        'index/project/project_save',//项目保存
+        'index/project/project_delete',//项目删除
+        'rbac/rbac/user_save',//用户保存
+        'rbac/rbac/user_delete',//用户删除
+        'rbac/rbac/role_save',//角色保存
+        'rbac/rbac/role_delete'//角色删除
+    ];
     public function run(&$params){
-        $module     = request()->module();
-        $controller = request()->controller();
-        $url  = $this->getActionUrl();
-
-        $Rbac =  new RbacModel();
-        $User =  new UserModel();
-        $Equipment =  new EquipmentModel();
-        if($url != 'index/index/user_login'){
-            $channel = 'web';
-            $user_exit = $Rbac->checkToken($channel);
-        }
-        $token_exit = $Rbac->getTokenFromHttp();
-        $token_exit = trim($token_exit,'"');
-        $user_info = Db::name('rbac_token')->where('token',$token_exit)->find();
-        if($url == 'index/index/user_login'){
-            $remark = "用户登录";
-            $User->saveLog($user_info['user_id'],$url,$remark);
-        }else if($url == 'index/index/user_login_out'){
-            $remark = "用户退出";
-            $User->saveLog($user_info['user_id'],$url,$remark);
-        }else if($url == "index/equipment/equipment_save"){
-            $remark = "设备保存";
-            $User->saveLog($user_info['user_id'],$url,$remark);
-        }else if($url == "index/equipment/equipment_delete"){
-            $remark = "设备删除";
-            $User->saveLog($user_info['user_id'],$url,$remark);
-        }
-        else if($url == "index/equipment/set_super_secret"){
-            $data = input('post.');
-            $original_data = Db::name('param')->where('box_id',$data['box_id'])->field('super_secret')->find();
-            $original_data = $original_data['super_secret'];
-            $new_data = $data['super_secret'];
-            $result = $Equipment->set_super_secret($data);
-            if($result == true){
-                $remark = "设置超级密码";
-                $User->saveLog($user_info['user_id'],$url,$original_data,$new_data,$remark);
+        $url = $this->getActionUrl();
+        if(in_array($url,$this->exclude)){
+            $data = request()->logArr;
+            $headers = getallheaders();
+            if(!empty($headers['token'])){
+                $token = $headers['token'];
+                $user_info = Db::name('rbac_token')->where('token',$token)->find();
+                if(empty($user_info)){
+                    app_send_400('您的登录信息为空，请重新登录');
+                }
             }
-        }else if($url == "index/consumable/consumable_save"){
-            $remark = "耗材保存";
-            $User->saveLog($user_info['user_id'],$url,$remark);
-        }else if($url == "index/consumable/consumable_delete"){
-            $remark = "耗材删除";
-            $User->saveLog($user_info['user_id'],$url,$remark);
-        }else if($url == "index/consumable/consumable_mark"){
-            $remark = "耗材标记";
-            $User->saveLog($user_info['user_id'],$url,$remark);
-        }else if($url == "index/project/project_save"){
-            $remark = "设备保存";
-            $User->saveLog($user_info['user_id'],$url,$remark);
-        }else if($url == "index/project/project_delete"){
-            $remark = "设备删除";
-            $User->saveLog($user_info['user_id'],$url,$remark);
-        }else if($url == "rbac/rbac/user_save"){
-            $remark = "用户保存";
-            $User->saveLog($user_info['user_id'],$url,$remark);
-        }else if($url == "rbac/rbac/user_delete"){
-            $remark = "用户删除";
-            $User->saveLog($user_info['user_id'],$url,$remark);
-        }else if($url == "/rbac/rbac/role_save"){
-            $remark = "角色保存";
-            $User->saveLog($user_info['user_id'],$url,$remark);
-        }else if($url == "/rbac/rbac/role_delete"){
-            $remark = "角色删除";
-            $User->saveLog($user_info['user_id'],$url,$remark);
+            $d = array(
+                'user_id'=>$user_info['user_id'],
+                'item_id'=>$data['itemID'],
+                'original_data'=>$data['from'],
+                'new_data'=>$data['to'],
+                'user_ip'=>getIP(),
+                'model'=>request()->module(),
+                'controller'=>request()->controller(),
+                'url'=>$url,
+                'insert_time'=>time()
+            );
+            Db::name('log')->insert($d);
+        }else{
+            return true;
         }
     }
     private function getActionUrl()

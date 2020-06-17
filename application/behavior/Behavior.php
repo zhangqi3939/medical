@@ -18,6 +18,10 @@ class Behavior extends Controller{
             // 获取当前访问路由;
             $url  = $this->getActionUrl();
             $Rbac =  new RbacModel();
+            if($url !== 'index/index/user_login'){
+                $channel = 'web';
+                $Rbac->checkToken($channel);
+            }
             $token_exit = $Rbac->getTokenFromHttp();
             $token_exit = trim($token_exit,'"');
             $uid = Db::name('rbac_token')->where('token',$token_exit)->find();
