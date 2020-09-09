@@ -147,7 +147,7 @@ class Equipment
             $old_super_secret = Db::name('param')->where('box_id',$data['box_id'])->field('super_secret')->find();
             empty($old_super_secret) && $old_super_secret = [];
             empty($data['super_secret']) && $data['super_secret'] = '';
-            empty($data['super_secret_use_cnts']) && $data['super_secret_use_cnts'] = '';
+            empty($data['super_secret_total_cnts']) && $data['super_secret_total_cnts'] = '';
             $Equipment = new EquipmentModel();
             $result = $Equipment->set_super_secret($data);
             $logArr = ['itemID'=>json_encode(array('box_id'=>$data['box_id'])),'from'=>json_encode($old_super_secret),'to'=>json_encode(array('super_secret'=>$data['super_secret']))];
@@ -164,7 +164,7 @@ class Equipment
             if(empty($box_id)){
                 app_send_400('请选择您要配置超级密码的设备');
             }
-            $param = Db::name('param')->where('box_id',$box_id)->field('box_id,super_secret,super_secret_use_cnts')->find();
+            $param = Db::name('param')->where('box_id',$box_id)->field('box_id,super_secret,super_secret_use_cnts,super_secret_total_cnts')->find();
             if(!empty($param)){
                 app_send($param);
             }

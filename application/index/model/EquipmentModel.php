@@ -81,7 +81,7 @@ class EquipmentModel extends Model
     //超级密码保存
     public function set_super_secret($params)
     {
-        $result = Db::name('param')->where('box_id',$params['box_id'])->update(array('super_secret'=>$params['super_secret'],'super_secret_use_cnts'=>$params['super_secret_use_cnts']));
+        $result = Db::name('param')->where('box_id',$params['box_id'])->update(array('super_secret'=>$params['super_secret'],'super_secret_total_cnts'=>$params['super_secret_total_cnts']));
         if($result == 1 || $result == 0 ){
             return true;
         }
