@@ -7,7 +7,7 @@ class RbacModel extends Model
     //从请求中的到token
     function getTokenFromHttp(){
         $headers = getallheaders();
-        return isset($headers['Token']) ? $headers['Token'] : '';
+        return isset($headers['token']) ? $headers['token'] : '';
     }
     //token检查
     public function checkToken($channel){

@@ -83,7 +83,9 @@ class Consumable extends Controller
                unset($re[0]);
                $keys = array('name','category','rfid','batch','customer','sale_time','remark');
                foreach ($re as $i => $vals) {
-
+                    if(empty(array_filter($vals))){
+                        continue;
+                    }
                     empty($vals[0]) ? $vals[0] = "" : $vals[0];
                     empty($vals[1]) ? $vals[1] = 1 : $vals[1];
                     empty($vals[2]) ? $vals[2] = "" : $vals[2];
