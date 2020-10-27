@@ -169,4 +169,48 @@ class Equipment
                 app_send($param);
             }
         }
+        //参数下发
+        public function param_distribution()
+        {
+            $data = input('post.');
+            if(!empty($data['box_id'])){
+                $info = [
+                    'box_id'                  => $data['box_id'],
+                    'super_secret'            => $data['super_secret'],//超级密码
+                    'super_secret_total_cnts' => $data['super_secret_total_cnts'],//超级密码配置次数
+                    'reserve1'                => $data['reserve1'],//管理员名称
+                    'reserve2'                => $data['reserve2'],//管理员密码
+                    'reserve12'               => $data['reserve12'],//强制禁用标记 1：打开 0：关闭
+                    'reserve13'               => $data['reserve13'],//温度异常作废 1：打开 0：关闭
+                    'flag_change'             => 1
+                ];
+                $param_info = Db::name('set_param')->where('box_id',$data['box_id'])->find();
+                if(empty($param_info)){
+                    $result = Db::name('set_param')->insert($info);
+                }else{
+                    unset($info['box_id']);
+                    $result = Db::name('set_param')->where('box_id',$data['box_id'])->update($info);
+                }
+                if($result == true){
+                    app_send();
+                }else{
+                    app_send_400('您所下发的参数失败，请仔细核对后再提交...');
+                }
+            }else{
+                app_send_400('请选择您要下发参数的设备...');
+            }
+        }
+        //参数详情
+        public function param_details()
+        {
+            $data = input('post.');
+            if(!empty($data['box_id'])){
+                $result = Db::name('param')->field('super_secret,super_secret_total_cnts,reserve1,reserve2,reserve12,reserve13')->where('box_id',$data['box_id'])->find();
+                if(!empty($result)){
+                    app_send($result);
+                }
+            }else{
+                app_send_400('请选择您要下发参数的设备...');
+            }
+        }
 }
