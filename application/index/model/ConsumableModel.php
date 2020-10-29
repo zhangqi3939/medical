@@ -48,17 +48,19 @@ class ConsumableModel extends Model
     public function actionRead($filename,$encode='utf-8') {
         $objReader = \PHPExcel_IOFactory::createReader('Excel2007');
         $objReader->setReadDataOnly(true);
-        $objPHPExcel = $objReader->load($filename);
+        $objPHPExcel = $objReader->load($filename,$encode);
         $objWorksheet = $objPHPExcel->getActiveSheet();
         $highestRow = $objWorksheet->getHighestRow();
         //return $highestRow;
         $highestColumn = $objWorksheet->getHighestColumn();
         $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn);
-        $excelData = array();
+        $excelData = [];
         for($row = 1; $row <= $highestRow; $row++) {
-            for ($col = 0; $col < $highestColumnIndex; $col++) {
-                $excelData[$row][]=(string)$objWorksheet->getCellByColumnAndRow($col, $row)->getValue();
+            $rowData = array();
+            for ($col = 0; $col <= $highestColumnIndex; $col++) {
+                $rowData[]=(string)$objWorksheet->getCellByColumnAndRow($col, $row)->getValue();
             }
+            $excelData[] = $rowData;
         }
         return $excelData;
     }

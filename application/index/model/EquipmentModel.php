@@ -42,7 +42,7 @@ class EquipmentModel extends Model
     //设备详情
     public function equipment_details($id)
     {
-        $select = "e.*,p.name as project_name,p.province,p.city,p.address,p.charge_person,p.tel,m.config_t1 as param_config_t1,m.config_t2 as param_config_t2,m.config_t3 as param_config_t3,m.config_t4 as param_config_t4,m.config_t5 as param_config_t5,m.config_t7 as param_config_t7,m.ST1 as param_ST1,m.ST2 as param_ST2,m.SV as param_SV,m.reserve1 as param_reserve1,m.reserve2 as param_reserve2,m.reserve3 as param_reserve3,m.reserve4 as param_reserve4,m.reserve5 as param_reserve5,m.reserve6 as param_reserve6";
+        $select = "e.*,p.name as project_name,p.province,p.city,p.address,p.charge_person,p.tel,m.config_t1 as param_config_t1,m.config_t2 as param_config_t2,m.config_t3 as param_config_t3,m.config_t4 as param_config_t4,m.config_t5 as param_config_t5,m.config_t6 as param_config_t6,m.config_t7 as param_config_t7,m.ST1 as param_ST1,m.ST2 as param_ST2,m.SV as param_SV,m.reserve1 as param_reserve1,m.reserve2 as param_reserve2,m.reserve3 as param_reserve3,m.reserve4 as param_reserve4,m.reserve5 as param_reserve5,m.reserve6 as param_reserve6,m.reserve7 as param_reserve7,m.reserve8 as param_reserve8,m.reserve9 as param_reserve9,m.reserve10 as param_reserve10,m.reserve11 as param_reserve11";
         $details = Db::name('equipment')
                     ->alias('e')
                     ->join('project p','e.project_id = p.id','left')

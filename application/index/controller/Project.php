@@ -5,12 +5,15 @@ use think\Db;
 use app\index\model\UserModel;
 use app\rbac\model\RbacModel;
 use app\index\model\ProjectModel;
+use think\Request;
+
 class Project
 {
     //项目保存
-    public function project_save()
+    public function project_save(Request $request)
     {
-        $data = input('post.');
+
+        $data = $_POST;
         $Project = new ProjectModel();
         $result = $Project->project_save($data);
         if($result > 0){

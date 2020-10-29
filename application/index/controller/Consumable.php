@@ -4,8 +4,6 @@ use think\Controller;
 use think\Db;
 use think\Loader;
 use PHPExcel;
-use PHPExcel_IOFactory;
-use PHPExcel_Cell;
 use app\index\model\ConsumableModel;
 class Consumable extends Controller
 {
@@ -65,6 +63,7 @@ class Consumable extends Controller
                 app_send_400('请选择耗材文件');
                 exit();
            }
+           $res = 0;
            if($file){
                $file_types = explode(".", $_FILES ['excel'] ['name']); // ["name"] => string(25) "excel文件名.xls"
                $file_type = $file_types [count($file_types) - 1];//xls后缀
@@ -82,23 +81,33 @@ class Consumable extends Controller
                array_splice($re, 1, 0);
                unset($re[0]);
                $keys = array('name','category','rfid','batch','customer','sale_time','remark');
+               $result = [];
                foreach ($re as $i => $vals) {
-                    if(empty(array_filter($vals))){
-                        continue;
+                    if(count(array_filter($vals)) > 0){
+                        $value = [];
+                        $value[0] = empty($vals[0]) ?  "" : $vals[0];
+                        $value[1] = empty($vals[1]) ? 1 : $vals[1];
+                        $value[2] = empty($vals[2]) ?  "" : $vals[2];
+                        $value[3] =  empty($vals[3]) ? "" : $vals[3];
+                        $value[4] = empty($vals[4]) ?  "" : $vals[4];
+                        $value[5] = empty($vals[5]) ?  time() : strtotime($vals[5]);
+                        $value[6] = empty($vals[6]) ?  "" : $vals[6];
+                        $result[] = array_combine($keys, $value);
                     }
-                    empty($vals[0]) ? $vals[0] = "" : $vals[0];
-                    empty($vals[1]) ? $vals[1] = 1 : $vals[1];
-                    empty($vals[2]) ? $vals[2] = "" : $vals[2];
-                    empty($vals[3]) ? $vals[3] = "" : $vals[3];
-                    empty($vals[4]) ? $vals[4] = "" : $vals[4];
-                    empty($vals[5]) ? $vals[5] = time() : $vals[5] = strtotime($vals[5]);
-                    empty($vals[6]) ? $vals[6] = "" : $vals[6];
-                   $re[$i] = array_combine($keys, $vals);
                }
                //遍历数组写入数据库
-               for ($i = 1; $i <= count($re); $i++) {
-                   $data = $re[$i];
-                   $res = db::name('consumable')->insert($data);
+               $data = [];
+               foreach ($result as $m=>$n) {
+                   $consumable_exit = Db::name('consumable')->where('rfid',$n['rfid'])->find();
+                   if(empty($consumable_exit)){
+                        $data[] = $n;
+                   }
+               }
+               if(!empty($data)){
+                   $res = Db::name('consumable')->insertAll($data);
+               }else{
+                   app_send('','400','请仔细核对您的耗材..');
+                   die;
                }
            }
            if($res > 0){

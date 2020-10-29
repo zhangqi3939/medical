@@ -29,9 +29,11 @@ class ProjectModel extends Model
                 app_send('', '400', '设备已存在,请仔细核对设备名称');
             }
         }else{
-            $result = Db::name('project ')->where('id',$id)->update($data);
+            $result = Db::name('project')->where('id',$id)->update($data);
         }
-        return $result;
+        if($result == 1 || $result == 0){
+            return true;
+        }
     }
     //项目详情
     public function project_details($id)
