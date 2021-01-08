@@ -6,10 +6,15 @@ use think\Debug;
 use app\rbac\model\RbacModel;
 class Rbac extends Controller
 {
+	function __construct()
+	{
+		parent::__construct();
+		header("Content-Type: text/html;charset=utf-8");
+	}
     //用户保存
     public function user_save()
     {
-        $data = input('post.');
+        $data = $_POST;
         $rbac = new RbacModel();
         $result = $rbac->user_save($data);
         if($result > 0){
@@ -52,7 +57,7 @@ class Rbac extends Controller
     //角色保存
     public  function role_save()
     {
-        $data = input('post.');
+        $data = $_POST;
         $rbac = new RbacModel();
         $result = $rbac->role_save($data);
         app_send($result);
@@ -82,7 +87,7 @@ class Rbac extends Controller
     //角色详情
     public function role_details()
     {
-        $role_id = input('post.role_id');
+        $role_id = input('post.role_ id');
         $rbac = new RbacModel();
         $info = $rbac->role_details($role_id);
         app_send($info);

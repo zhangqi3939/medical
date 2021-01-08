@@ -5,12 +5,13 @@ use think\Db;
 use think\Loader;
 use PHPExcel;
 use app\index\model\ConsumableModel;
+use app\rbac\model\RbacModel;
 class Consumable extends Controller
 {
     //耗材保存
     public function consumable_save()
     {
-        $data = input('post.');
+        $data = $_POST;
         $Consumable = new ConsumableModel();
         $result = $Consumable->consumable_save($data);
         if($result > 0){
@@ -26,7 +27,8 @@ class Consumable extends Controller
             ->alias('c')
             ->join('equipment e','e.box_id = c.box_id','left')
             ->join('project p','p.id = e.project_id','left')
-            ->field('c.id,c.name,c.category,c.rfid,c.flag_use,c.box_id,c.status,c.sale_time,c.batch,c.remark,c.customer,e.name as equipment_name,p.name as project_name,p.province,p.city,p.address,p.lng,p.lat,p.charge_person')
+            ->field('c.id,c.name,c.category,c.rfid,c.flag_use,c.box_id,c.status,c.sale_time,c.batch,c.remark,c.customer,c.add_by,c.add_by_name,e.name as equipment_name,p.name as project_name,p.province,p.city,p.address,p.lng,p.lat,p.charge_person,e.install_time')
+            ->order('id asc')
             ->select();
         app_send($info);
     }
@@ -41,7 +43,7 @@ class Consumable extends Controller
     //耗材删除
     public function consumable_delete()
     {
-        $id = input('post.id');
+        $id = $_POST;
         $Consumable = new ConsumableModel();
         $result = $Consumable->consumable_delete($id);
         if($result > 0){
@@ -53,7 +55,9 @@ class Consumable extends Controller
     //耗材导入
     public function consumable_import()
     {
-       if(request()->isPost()){
+        $rbacModel = new RbacModel();
+        $user_info = $rbacModel->checkToken('web');
+        if(request()->isPost()){
            Loader::import('PHPExcel.PHPExcel');
            Loader::import('PHPExcel.PHPExcel.PHPExcel_IOFactory');
            Loader::import('PHPExcel.PHPExcel.PHPExcel_Cell');
@@ -80,7 +84,7 @@ class Consumable extends Controller
                $re = $consumable->actionRead($file_path, 'utf-8');
                array_splice($re, 1, 0);
                unset($re[0]);
-               $keys = array('name','category','rfid','batch','customer','sale_time','remark');
+               $keys = array('name','category','rfid','batch','customer','sale_time','remark','add_by','add_by_name');
                $result = [];
                foreach ($re as $i => $vals) {
                     if(count(array_filter($vals)) > 0){
@@ -92,6 +96,8 @@ class Consumable extends Controller
                         $value[4] = empty($vals[4]) ?  "" : $vals[4];
                         $value[5] = empty($vals[5]) ?  time() : strtotime($vals[5]);
                         $value[6] = empty($vals[6]) ?  "" : $vals[6];
+                        $value[7] = $user_info['id'];
+                        $value[8] = $user_info['user_name'];
                         $result[] = array_combine($keys, $value);
                     }
                }
@@ -128,7 +134,7 @@ class Consumable extends Controller
             ->join('equipment e','e.box_id = c.box_id','left')
             ->join('project p','p.id = e.project_id','left')
             //->where('p.id != ""')
-            ->field('c.id as consumable_id,c.flag_use,c.name as consumable_name,p.id as project_id,p.name as project_name')
+            ->field('c.id as consumable_id,e.box_id,e.install_time,c.flag_use,c.name as consumable_name,c.rfid,p.id as project_id,p.name as project_name,c.box_id,e.install_time')
             ->select();
         $total = count(Db::name('consumable')->select());
         $is_use = count(Db::name('consumable')->where('flag_use',1)->select());

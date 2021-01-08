@@ -1,6 +1,7 @@
 <?php
 
 namespace app\index\model;
+use app\rbac\model\RbacModel;
 use think\Model;
 use think\Db;
 class EquipmentModel extends Model
@@ -8,6 +9,8 @@ class EquipmentModel extends Model
     //设备保存
     public function equipment_save($params)
     {
+        $rbacModel = new RbacModel();
+        $user_info = $rbacModel->checkToken('web');
         $id = empty($params['id'])  ? "" : $params['id'];
         $data['name'] = empty($params['name'])  ? "" : $params['name'];
         $data['project_id'] = empty($params['project_id']) ? "" : $params['project_id'];
@@ -15,9 +18,13 @@ class EquipmentModel extends Model
         $data['install_user'] = empty($params['install_user']) ? "" : $params['install_user'];
         $data['type'] = empty($params['type']) ? "" : $params['type'];
         $data['remarks'] = empty($params['remarks']) ? "" : $params['remarks'];
+        $data['iccid'] = empty($params['iccid']) ? "" : $params['iccid'];
+        $data['sim'] = empty($params['sim']) ? "" : $params['sim'];
         //$data['equipment_name'] = empty($params['equipment_name']) ? "" :$params['equipment_name'];
         $data['install_time'] = time();
         if(empty($id)){
+            $data['add_by'] = empty($user_info['id']) ? "" : $user_info['id'];
+            $data['add_by_name'] = empty($user_info['user_name']) ? "" : $user_info['user_name'];
             $exit_box_id = Db::name('equipment')->where('box_id',$data['box_id'])->find();
             $exit_box_name = Db::name('equipment')->where('name',$data['name'])->find();
             if(empty($exit_box_id) && empty($exit_box_name)){

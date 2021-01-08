@@ -43,6 +43,7 @@ class DataModel extends Model
                 ->where('box_id',$params->boxId)
                 ->where('insert_time','between',"{$params->startStamp},{$params->endStamp}")
                 ->field($select)
+				->order('insert_time desc')
                 //->fetchSql(true)
                 ->select();
 
@@ -59,7 +60,7 @@ class DataModel extends Model
         统计类型$category，默认制冷机
         时间区间$timeStrip,数据上传间隔，默认30秒
     */
-    function workTime($params,$category = 'status_cold'){
+   /* function workTime($params,$category = 'status_cold'){
         if(empty($params->startStamp) || empty($params->endStamp)){
             $params->endStamp = time();
             $params->startStamp = $params->endStamp - 7 * 24 * 3600;
@@ -91,5 +92,56 @@ class DataModel extends Model
         }
         $res['reserve4'] = $reserve4;
         return $res;
+    }*/
+
+    /*//时长统计
+        参数对象$params:
+        {
+            'startTime'=>'',//开始时间
+            'endTime'=>'',//结束时间
+            'boxIds'=>array()//设备id数组
+        }
+        统计类型$category，默认制冷机
+        时间区间$timeStrip,数据上传间隔，默认30秒
+    */
+    public function workTime($params){
+       /* if(empty($params['startStamp']) || empty($params['endStamp'])){
+            $params['endStamp'] = time();
+            $params['startStamp'] = $params['endStamp'] - 7 * 24 * 3600;
+        }
+
+        $where['insert_time'] = ['between',"{$params['startStamp']},{$params['endStamp']}"];*/
+        $where = [];
+        if(!empty($params['boxIds'])){
+            $where['box_id'] = is_array($params['boxIds']) ? ['in',implode(',', $params['boxIds'])] : ['in', $params['boxIds']];
+        }
+        $result = Db::name('param')->where($where)->select();
+        $array = [];
+        foreach($result as $value){
+            $box_id = $value['box_id'];
+            $res =  Db::name('param')->field('config_t6,config_t5,config_t4,config_t3,reserve4')->where('box_id',$value['box_id'])->limit(1)->find();
+            //一级泵
+            $beng1 = $res['config_t5']*$res['reserve4'];
+            //二级泵
+            $beng2 = $res['config_t4']*$res['reserve4'];
+            //搅拌泵
+          /*  if($res['config_t6'] != 0){
+                $jiao = (($res['config_t5'] / $res['config_t6'])*$res['config_t6'] + $res['config_t3'])*$res['reserve4'];*/
+          	/*	var_dump($res['config_t3']);3
+          		var_dump($res['config_t6']);1
+          		var_dump($res['reserve4']);die;10
+			$jiao = 3+30*1/1+60*/
+                $jiao = number_format(($res['config_t3'] + 30 * ($res['config_t6'] / ($res['config_t6'] + 60)))*$res['reserve4'],1);
+            /*}else{
+                $jiao = 0;
+            }*/
+            $array["$box_id"] = [
+                'beng1' => $beng1,
+                'beng2' => $beng2,
+                'jiao'  => $jiao,
+                'ci' => $res['reserve4']
+            ];
+        }
+        return $array;
     }
 }

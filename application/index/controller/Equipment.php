@@ -11,7 +11,7 @@ class Equipment
     //设备保存
     public function equipment_save()
     {
-        $data = input('post.');
+        $data = $_POST;
         $Equipment = new EquipmentModel();
         $result = $Equipment->equipment_save($data);
         $logArr = ['itemID'=>json_encode(array('box_id'=>$data['box_id'])),'from'=>json_encode(array('name'=>$data['name'],'box_id'=>$data['box_id'],'project_id'=>$data['project_id'],'remarks'=>$data['remarks'])),'to'=>json_encode(array('name'=>$data['name'],'box_id'=>$data['box_id'],'project_id'=>$data['project_id'],'remarks'=>$data['remarks']))];
@@ -27,7 +27,7 @@ class Equipment
         $info = Db::name('equipment')
             ->alias('e')
             ->join('project p','e.project_id = p.id','left')
-            ->field('e.id,e.type,e.name as equipment_name,e.box_id,e.project_id,p.name as project_name,e.install_time,e.install_user,e.remarks')
+            ->field('e.id,e.type,e.name as equipment_name,e.box_id,e.project_id,p.name as project_name,e.iccid,e.sim,e.install_time,e.install_user,e.remarks,e.add_by,e.add_by_name')
             ->select();
         app_send($info);
     }
@@ -98,7 +98,7 @@ class Equipment
             app_send($res);
         }
         //设备运行时长
-        function work_time(){
+       /* function work_time(){
             $formData = input('post.');
             //起止时间
             if(empty($formData['startTime']) || empty($formData['endTime'])){
@@ -125,9 +125,9 @@ class Equipment
             $res['status_p4_beng2'] = $dm->workTime($params,'status_p4_beng2');
             $res['status_p6_beng'] = $dm->workTime($params,'status_p6_beng');
             app_send($res);
-        }
+        }*/
         //报警信息
-        public function alarm_info()
+        /*public function alarm_info()
         {
             $alarm = Db::name('data_latest')
                 ->alias('d')
@@ -136,11 +136,32 @@ class Equipment
                 ->where('d.alarm_cold',1)
                 ->select();
             app_send($alarm);
+        }*/
+        //设备运行时长
+        public function work_time()
+        {
+            $formData = input('post.');
+            //起止时间
+           /* if(empty($formData['startTime']) || empty($formData['endTime'])){
+                $endStamp = time();
+                $startStamp = $endStamp - 7*24*3600;
+            }else{
+                $startStamp = strtotime($formData['startTime']);
+                $endStamp = strtotime($formData['endTime']);
+            }*/
+            //设备列表
+            $boxIds = empty($formData['boxIds']) ? array() : $formData['boxIds'];
+            /*$param['startStamp'] = $startStamp;
+            $param['endStamp'] = $endStamp;*/
+            $param['boxIds'] = $boxIds;
+            $dm = new DataModel();
+            $res = $dm->workTime($param);
+            app_send($res);
         }
         //配置超级密码
         public function set_super_secret()
         {
-            $data = input('post.');
+            $data = $_POST;
             if(empty($data['box_id'])){
                 app_send_400('请选择您要配置超级密码的设备');
             }
@@ -172,7 +193,7 @@ class Equipment
         //参数下发
         public function param_distribution()
         {
-            $data = input('post.');
+            $data = $_POST;
             if(!empty($data['box_id'])){
                 $info = [
                     'box_id'                  => $data['box_id'],
@@ -180,6 +201,7 @@ class Equipment
                     'super_secret_total_cnts' => $data['super_secret_total_cnts'],//超级密码配置次数
                     'reserve1'                => $data['reserve1'],//管理员名称
                     'reserve2'                => $data['reserve2'],//管理员密码
+                    'reserve4'                => $data['reserve4'],//设备使用次数
                     'reserve12'               => $data['reserve12'],//强制禁用标记 1：打开 0：关闭
                     'reserve13'               => $data['reserve13'],//温度异常作废 1：打开 0：关闭
                     'flag_change'             => 1
@@ -205,12 +227,38 @@ class Equipment
         {
             $data = input('post.');
             if(!empty($data['box_id'])){
-                $result = Db::name('param')->field('super_secret,super_secret_total_cnts,reserve1,reserve2,reserve12,reserve13')->where('box_id',$data['box_id'])->find();
-                if(!empty($result)){
-                    app_send($result);
+                $result = Db::name('param')->field('super_secret,super_secret_total_cnts,reserve1,reserve2,reserve4,reserve12,reserve13')->where('box_id',$data['box_id'])->find();
+                $result1 = Db::name('set_param')->field('super_secret,super_secret_total_cnts,reserve1,reserve2,reserve4,reserve12,reserve13')->where('box_id',$data['box_id'])->find();
+                $array = [
+                    'param'=>$result,
+                    'set_param'=>$result1
+                ];
+                if(!empty($array)){
+                    app_send($array);
                 }
             }else{
                 app_send_400('请选择您要下发参数的设备...');
             }
+        }
+        //报警消息
+        public function alarm_info()
+        {
+            $formData = input('post.');
+            //起止时间
+            if(empty($formData['start_time']) || empty($formData['end_time'])){
+                $endStamp = time();
+                $startStamp = $endStamp - 7*24*3600;
+            }else{
+                $startStamp = strtotime($formData['start_time']);
+                $endStamp = strtotime($formData['end_time']);
+            }
+            //$alarm = Db::name('his_alarm')->where('insert_time between '.$startStamp.' and '.$endStamp)->select();
+            $alarm = Db::name('his_alarm')
+                ->alias('h')
+                ->join('equipment e','e.box_id = h.box_id','left')
+                ->field('e.name,h.*')
+                ->where('h.insert_time between '.$startStamp.' and '.$endStamp)
+                ->select();
+            app_send($alarm);
         }
 }

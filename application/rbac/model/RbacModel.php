@@ -61,6 +61,7 @@ class RbacModel extends Model
         }else{
             $formData['pass_word'] = md5(123456);
         }
+        
         if(empty($id)){
             $formData['add_time'] = time();
             $res = Db::name('rbac_user')->insertGetId($formData);

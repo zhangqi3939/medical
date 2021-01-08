@@ -5,11 +5,14 @@ use think\Db;
 use PHPExcel;
 use PHPExcel_IOFactory;
 use PHPExcel_Cell;
+use app\rbac\model\RbacModel;
 class ConsumableModel extends Model
 {
     //耗材保存
-        public function consumable_save($params)
+        public function  consumable_save($params)
     {
+        $rbacModel = new RbacModel();
+        $user_info = $rbacModel->checkToken('web');
         $id = empty($params['id']) ? "" : $params['id'];
         $data['category'] = empty($params['category']) ? "" : $params['category'];
         $data['flag_use'] = empty($params['flag_use']) ? "" : $params['flag_use'];
@@ -18,7 +21,10 @@ class ConsumableModel extends Model
         $data['batch'] = empty($params['batch']) ? "" : $params['batch'];
         $data['customer'] = empty($params['customer']) ? "" : $params['customer'];
         $data['sale_time'] = empty($params['sale_time']) ? "" : $params['sale_time'];
+        $data['remark'] = empty($params['remark']) ? "" : $params['remark'];
         if(empty($id)){
+            $data['add_by'] = empty($user_info['id']) ? "" : $user_info['id'];
+            $data['add_by_name'] = empty($user_info['user_name']) ? "" : $user_info['user_name'];
             $exit = Db::name('consumable')->where('rfid',$params['rfid'])->find();
             if(empty($exit)){
                 $result = Db::name('consumable')->insert($data);
@@ -41,7 +47,7 @@ class ConsumableModel extends Model
     //耗材删除
     public function consumable_delete($id)
     {
-        $result = Db::name('consumable')->where('id',$id)->delete();
+        $result = Db::name('consumable')->where('id','in',$id['id'])->delete();
         return $result;
     }
     //读取xls数据
